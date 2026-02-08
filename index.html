@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una sorpresa te espera...</title>
+    <title>Una sorpresa te espera</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* --- ESTILOS GENERALES --- */
         :root {
-            --primary-color: #d32f2f; /* Rojo Dani Martín */
+            --primary-color: #d32f2f;
             --secondary-color: #333;
             --bg-color: #f0f2f5;
         }
@@ -37,7 +36,6 @@
             overflow: hidden;
         }
 
-        /* Barra de progreso */
         .progress-container {
             position: absolute;
             top: 0;
@@ -49,14 +47,13 @@
         .progress-bar {
             height: 100%;
             background-color: var(--primary-color);
-            width: 0%; /* Empieza en 0 */
+            width: 0%;
             transition: width 0.5s ease-in-out;
         }
 
         h1 { color: var(--primary-color); margin-bottom: 25px; font-weight: 800; }
         p { font-size: 1.2em; line-height: 1.6; margin-bottom: 35px; color: #555; }
         
-        /* Inputs y Botones más modernos */
         input[type="text"] {
             padding: 15px;
             width: 85%;
@@ -93,7 +90,6 @@
             box-shadow: 0 8px 20px rgba(211, 47, 47, 0.3);
         }
 
-        /* --- UTILIDADES Y EFECTOS --- */
         .hidden { display: none !important; }
         
         .error-message {
@@ -104,7 +100,6 @@
             display: none;
         }
 
-        /* Animación de error (sacudida) */
         .shake { animation: shake 0.5s; border-color: var(--primary-color) !important; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
@@ -112,7 +107,6 @@
             40%, 80% { transform: translateX(10px); }
         }
 
-        /* Transiciones suaves entre fases */
         .fade-out-up { animation: fadeOutUp 0.6s forwards; }
         .fade-in-up { animation: fadeInUp 0.6s forwards; }
         
@@ -125,7 +119,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Overlay de éxito intermedio */
         #success-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -142,20 +135,17 @@
         }
         #success-overlay.active { opacity: 1; pointer-events: all; }
         #success-overlay h2 { font-size: 3em; margin: 0; }
-        #success-overlay p { color: white; font-size: 1.5em; }
 
-        /* --- ESTILOS DEL FINAL --- */
         .ticket-container {
             border: 4px dashed var(--primary-color);
             padding: 30px;
             margin-top: 30px;
             background-color: #fff5f5;
             border-radius: 15px;
-            position: relative;
         }
         .video-wrapper {
             position: relative;
-            padding-bottom: 56.25%; /* 16:9 ratio */
+            padding-bottom: 56.25%;
             height: 0;
             border-radius: 12px;
             overflow: hidden;
@@ -175,22 +165,22 @@
     <audio id="sfx-final" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
-        <h2>¡CORRECTO!</h2>
-        <p>Siguiente nivel desbloqueado...</p>
+        <h2>CORRECTO</h2>
+        <p>Siguiente nivel desbloqueado</p>
     </div>
 
     <div class="main-container">
         <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
         <div id="phase-1" class="phase-content">
-            <h1>Hola, hermana ❤️</h1>
+            <h1>Hola, hermana</h1>
             <p>Tengo un regalo para ti. Pero es demasiado bueno para dártelo sin más. Vamos a jugar a un juego para desbloquearlo.</p>
-            <button class="btn-action" onclick="start Game()">¡Comenzar el Reto!</button>
+            <button class="btn-action" onclick="startGame()">Comenzar el Reto</button>
         </div>
 
         <div id="phase-2" class="phase-content hidden">
             <h1>Nivel 1: El Protagonista</h1>
-            <p>Antes no le dejaban entrar por llevar <strong>zapatillas</strong>. Ahora es el jefe. ¿De quién hablamos?</p>
+            <p>Antes no le dejaban entrar por llevar zapatillas. Ahora es el jefe. ¿De quién hablamos?</p>
             <input type="text" id="input-2" placeholder="Su nombre es...">
             <p id="error-2" class="error-message">No es ese... Piensa en el líder de una banda mítica.</p>
             <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Comprobar</button>
@@ -198,7 +188,7 @@
 
         <div id="phase-3" class="phase-content hidden">
             <h1>Nivel 2: Matemáticas</h1>
-            <p>¡Bien hecho! Sigamos.<br>Tiene una canción que es un número. Un número redondo con el que todo empieza.</p>
+            <p>¡Bien hecho! Sigamos. Tiene una canción que es un número. Un número redondo con el que todo empieza.</p>
             <input type="text" id="input-3" placeholder="Escribe el número...">
             <p id="error-3" class="error-message">Incorrecto. Es el número anterior al uno.</p>
             <button class="btn-action" onclick="validate(3, 'cero', 4)">Comprobar</button>
@@ -208,13 +198,13 @@
             <h1>Nivel 3: Familia</h1>
             <p>En una de sus canciones más famosas, había una madre que nos volvía locos a todos. ¿La madre de quién?</p>
             <input type="text" id="input-4" placeholder="La madre de...">
-            <p id="error-4" class="error-message">¡Mec! Pista: Rima con "no sé".</p>
+            <p id="error-4" class="error-message">Incorrecto. Pista: Rima con "no sé".</p>
             <button class="btn-action" onclick="validate(4, 'jose', 5)">Comprobar</button>
         </div>
 
         <div id="phase-5" class="phase-content hidden">
             <h1>Nivel 4: El Destino</h1>
-            <p>Ya casi lo tienes. ¿A qué ciudad tenemos que viajar? <br>Pista: Paella, fallas y Mediterráneo.</p>
+            <p>Ya casi lo tienes. ¿A qué ciudad tenemos que viajar? Pista: Paella, fallas y Mediterráneo.</p>
             <input type="text" id="input-5" placeholder="Ciudad...">
             <p id="error-5" class="error-message">Frío, frío. Está en la costa este.</p>
             <button class="btn-action" onclick="validate(5, 'valencia', 6)">Comprobar</button>
@@ -222,152 +212,106 @@
 
         <div id="phase-6" class="phase-content hidden">
             <h1>Nivel Final: La Fecha</h1>
-            <p>Última pregunta para abrir el regalo.<br>¿En qué mes dicen que "hace su agosto" la primavera?</p>
+            <p>Última pregunta para abrir el regalo. ¿En qué mes dicen que "hace su agosto" la primavera?</p>
             <input type="text" id="input-6" placeholder="Mes...">
             <p id="error-6" class="error-message">Error. Es el quinto mes del año.</p>
-            <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">ABRIR REGALO 🎁</button>
+            <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">ABRIR REGALO</button>
         </div>
 
         <div id="phase-7" class="phase-content hidden">
-            <h1>¡LO CONSEGUISTE! 🎉</h1>
+            <h1>LO CONSEGUISTE</h1>
             <p>Prepara la garganta porque... ¡NOS VAMOS DE CONCIERTO!</p>
             
             <div class="video-wrapper">
-                 <iframe src="https://www.youtube.com/embed/DxFFBZ2Zq9g?autoplay=1&mute=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/DxFFBZ2Zq9g?autoplay=1&mute=0" title="Dani Martin" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
 
             <div class="ticket-container">
-                <h2 style="color: var(--primary-color); margin-top:0;">🎫 ENTRADAS: DANI MARTÍN</h2>
-                <h3>GIRA "25 P*TOS AÑOS"</h3>
+                <h2 style="color: var(--primary-color); margin-top:0;">ENTRADAS: DANI MARTÍN</h2>
+                <h3>GIRA 25 P*TOS AÑOS</h3>
                 <p>📍 <strong>Lugar:</strong> Valencia</p>
                 <p>📅 <strong>Fecha:</strong> Mayo 2026</p>
                 <p style="font-size: 1.3em; font-weight: bold;">¡Te quiero mucho!</p>
             </div>
         </div>
-
     </div>
 
     <script>
-        // --- LÓGICA JAVASCRIPT MEJORADA ---
-
-        const totalPhases = 6; // Total de pasos antes del final
-        let currentProgress = 0;
-
-        // Sonidos
+        const totalPhases = 6;
         const sfxSuccess = document.getElementById("sfx-success");
         const sfxError = document.getElementById("sfx-error");
         const sfxFinal = document.getElementById("sfx-final");
-        sfxFinal.volume = 0.4; // Bajar un poco el volumen final
 
         function startGame() {
-            playSound(sfxSuccess);
+            sfxSuccess.play().catch(() => {});
             transition(1, 2);
             updateProgress(1);
         }
 
-        // Función principal de validación
         function validate(currentPhaseId, correctAnswer, nextPhaseId, isFinal = false) {
             const inputElement = document.getElementById('input-' + currentPhaseId);
             const errorElement = document.getElementById('error-' + currentPhaseId);
-            
-            // LIMPIEZA PROFUNDA DEL TEXTO:
-            // 1. Quita espacios delante y detrás.
-            // 2. Convierte a minúsculas.
-            // 3. 'normalize' y 'replace' eliminan las tildes (Martín -> martin).
             let userAnswer = inputElement.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
             if (userAnswer.includes(correctAnswer)) {
-                // --- ACIERTO ---
                 errorElement.style.display = 'none';
-                inputElement.blur(); // Quitar foco del input
+                inputElement.blur();
                 
                 if (isFinal) {
-                    // Si es la última fase, lanza el final directo
-                    playSound(sfxFinal);
+                    sfxFinal.play().catch(() => {});
                     launchConfetti();
                     transition(currentPhaseId, nextPhaseId);
                     updateProgress(totalPhases);
                 } else {
-                    // Si es una fase intermedia, muestra celebración
-                    playSound(sfxSuccess);
+                    sfxSuccess.play().catch(() => {});
                     showSuccessMessage();
                     updateProgress(currentPhaseId);
-                    // Espera 1.5s mientras se muestra el mensaje de éxito antes de cambiar
                     setTimeout(() => {
                         transition(currentPhaseId, nextPhaseId);
                     }, 1500);
                 }
-
             } else {
-                // --- ERROR ---
-                playSound(sfxError);
+                sfxError.play().catch(() => {});
                 errorElement.style.display = 'block';
-                // Añade clase de sacudida y la quita a los 0.5s
                 inputElement.classList.add('shake');
                 setTimeout(() => inputElement.classList.remove('shake'), 500);
             }
         }
 
-        // Muestra el popup rojo de "CORRECTO"
         function showSuccessMessage() {
             const overlay = document.getElementById('success-overlay');
             overlay.classList.add('active');
             setTimeout(() => overlay.classList.remove('active'), 1300);
         }
 
-        // Maneja la transición suave entre pantallas
         function transition(current, next) {
             const currentEl = document.getElementById('phase-' + current);
             const nextEl = document.getElementById('phase-' + next);
-
-            // 1. Anima la salida de la actual
             currentEl.classList.add('fade-out-up');
-
-            // 2. Cuando termine la animación de salida (0.5s después)
             setTimeout(() => {
-                currentEl.classList.add('hidden'); // Oculta la vieja
-                currentEl.classList.remove('fade-out-up'); // Limpia clase
-                
-                nextEl.classList.remove('hidden'); // Muestra la nueva
-                nextEl.classList.add('fade-in-up'); // Anima la entrada
-                
-                // Limpia la animación de entrada después de que termine
-                setTimeout(() => nextEl.classList.remove('fade-in-up'), 600);
-                
-                // Pone el foco en el siguiente input si existe
+                currentEl.classList.add('hidden');
+                currentEl.classList.remove('fade-out-up');
+                nextEl.classList.remove('hidden');
+                nextEl.classList.add('fade-in-up');
                 const nextInput = document.getElementById('input-' + next);
                 if (nextInput) nextInput.focus();
-
             }, 500); 
         }
 
-        // Actualiza la barra superior
         function updateProgress(phaseCompleted) {
             const percentage = (phaseCompleted / totalPhases) * 100;
             document.getElementById('progress').style.width = percentage + '%';
         }
 
-        // Reproductor de sonidos seguro
-        function playSound(soundElement) {
-            // Reinicia el sonido por si se pulsa rápido varias veces
-            soundElement.currentTime = 0;
-            // Intenta reproducir (los navegadores a veces bloquean esto si no hay interacción previa)
-            soundElement.play().catch(e => console.log("Sonido bloqueado por el navegador hasta interacción"));
-        }
-
-        // Lanza el confeti final
         function launchConfetti() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
             var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
             function randomInRange(min, max) { return Math.random() * (max - min) + min; }
-
             var interval = setInterval(function() {
                 var timeLeft = animationEnd - Date.now();
                 if (timeLeft <= 0) { return clearInterval(interval); }
                 var particleCount = 50 * (timeLeft / duration);
-                // Lanza confeti desde dos lados
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
             }, 250);
