@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Una sorpresa para ti</title>
+    <style>
+        /* ESTILOS VISUALES */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 { color: #d32f2f; margin-bottom: 20px; }
+        p { font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; }
+        
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        input[type="text"]:focus {
+            border-color: #d32f2f;
+        }
+
+        button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .hidden { display: none; }
+        
+        .error-message {
+            color: #d32f2f;
+            font-weight: bold;
+            margin-top: 10px;
+            display: none;
+        }
+
+        /* Estilo para el regalo final */
+        .ticket {
+            border: 2px dashed #d32f2f;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #fff0f0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="phase-1">
+            <h1>Hola, hermana</h1>
+            <p>Tengo algo para ti, pero las cosas buenas hay que ganárselas. ¿Estás lista para jugar?</p>
+            <button onclick="nextPhase(1, 2)">COMENZAR</button>
+        </div>
+
+        <div id="phase-2" class="hidden">
+            <h1>Pista 1</h1>
+            <p>Antes iba en <strong>zapatillas</strong> y pedía entrar, aunque le decían que no. Ahora llena estadios solo. ¿Quién es?</p>
+            <input type="text" id="answer-2" placeholder="Escribe el nombre del artista...">
+            <br>
+            <button onclick="checkAnswer(2, 'dani martin', 3)">COMPROBAR</button>
+            <p id="error-2" class="error-message">Mmm... no es ese. Piensa en "El Canto del Loco".</p>
+        </div>
+
+        <div id="phase-3" class="hidden">
+            <h1>Pista 2</h1>
+            <p>¡Correcto! Ahora dime, ¿dónde se comen las mejores paellas y corren las Fallas?</p>
+            <input type="text" id="answer-3" placeholder="Ciudad...">
+            <br>
+            <button onclick="checkAnswer(3, 'valencia', 4)">COMPROBAR</button>
+            <p id="error-3" class="error-message">Incorrecto. Pista: Río Turia.</p>
+        </div>
+
+        <div id="phase-4" class="hidden">
+            <h1>Pista 3</h1>
+            <p>Ya casi estamos. ¿En qué mes dicen que "hace su agosto" la primavera?</p>
+            <input type="text" id="answer-4" placeholder="Mes...">
+            <br>
+            <button onclick="checkAnswer(4, 'mayo', 5)">COMPROBAR</button>
+            <p id="error-4" class="error-message">Incorrecto. Es el quinto mes.</p>
+        </div>
+
+        <div id="phase-5" class="hidden">
+            <h1>¡FELICIDADES!</h1>
+            <p>Prepara las maletas porque nos vamos de concierto.</p>
+            
+            <div class="ticket">
+                <h2>DANI MARTÍN</h2>
+                <p>GIRA 25 P*TOS AÑOS</p>
+                <p><strong>Lugar:</strong> Valencia</p>
+                <p><strong>Fecha:</strong> Mayo 2026</p>
+                <p>¡Te quiero!</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // LÓGICA DEL JUEGO
+        
+        // Función para cambiar de pantalla simplemente (sin validar)
+        function nextPhase(current, next) {
+            document.getElementById('phase-' + current).classList.add('hidden');
+            document.getElementById('phase-' + next).classList.remove('hidden');
+        }
+
+        // Función para validar respuestas
+        function checkAnswer(currentPhase, correctAnswer, nextPhaseId) {
+            // Obtenemos lo que ha escrito el usuario
+            var userAnswer = document.getElementById('answer-' + currentPhase).value;
+            
+            // Limpiamos la respuesta (quitamos espacios y ponemos minúsculas para comparar)
+            // Así funciona igual si escribe "Valencia " o "VALENCIA"
+            var cleanAnswer = userAnswer.trim().toLowerCase();
+            
+            // Comparamos. Importante: normalize quita tildes (más avanzado), 
+            // pero aquí haremos una comparación simple.
+            
+            if (cleanAnswer.includes(correctAnswer)) {
+                // Si es correcto
+                document.getElementById('phase-' + currentPhase).classList.add('hidden');
+                document.getElementById('phase-' + nextPhaseId).classList.remove('hidden');
+            } else {
+                // Si es incorrecto
+                document.getElementById('error-' + currentPhase).style.display = 'block';
+                // Efecto de vibración simple en el input
+                var input = document.getElementById('answer-' + currentPhase);
+                input.style.border = "2px solid red";
+                setTimeout(() => { input.style.border = "2px solid #ddd"; }, 1000);
+            }
+        }
+    </script>
+</body>
+</html>
