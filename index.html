@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una sorpresa para ti</title>
+    <title>Sorpresa para mi hermana</title>
     <style>
-        /* ESTILOS VISUALES */
+        /* ESTILOS (IGUAL QUE ANTES + MEJORAS PARA VIDEO) */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f4;
@@ -24,7 +24,7 @@
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 500px;
+            max-width: 600px; /* Un poco más ancho para el vídeo */
             width: 100%;
         }
 
@@ -32,32 +32,35 @@
         p { font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; }
         
         input[type="text"] {
-            padding: 10px;
+            padding: 12px;
             width: 80%;
             border: 2px solid #ddd;
-            border-radius: 5px;
+            border-radius: 8px;
             font-size: 16px;
             margin-bottom: 20px;
             outline: none;
+            transition: 0.3s;
         }
 
         input[type="text"]:focus {
             border-color: #d32f2f;
+            box-shadow: 0 0 8px rgba(211, 47, 47, 0.2);
         }
 
         button {
             background-color: #333;
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 12px 30px;
             font-size: 16px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
+            border-radius: 30px; /* Botones más redondos */
+            transition: background 0.3s, transform 0.1s;
         }
 
         button:hover {
-            background-color: #555;
+            background-color: #d32f2f;
+            transform: scale(1.05);
         }
 
         .hidden { display: none; }
@@ -67,14 +70,43 @@
             font-weight: bold;
             margin-top: 10px;
             display: none;
+            animation: shake 0.5s;
+        }
+
+        /* Animación de error */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
         }
 
         /* Estilo para el regalo final */
         .ticket {
-            border: 2px dashed #d32f2f;
+            border: 3px dashed #d32f2f;
             padding: 20px;
             margin-top: 20px;
             background-color: #fff0f0;
+            border-radius: 10px;
+        }
+
+        .video-container {
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 56.25%; /* Ratio 16:9 */
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
@@ -83,82 +115,96 @@
     <div class="container">
         
         <div id="phase-1">
-            <h1>Hola, hermana</h1>
-            <p>Tengo algo para ti, pero las cosas buenas hay que ganárselas. ¿Estás lista para jugar?</p>
-            <button onclick="nextPhase(1, 2)">COMENZAR</button>
+            <h1>Hola, hermana ❤️</h1>
+            <p>Tengo una sorpresa para ti, pero vas a tener que trabajar un poquito para conseguirla. ¿Preparada?</p>
+            <button onclick="nextPhase(1, 2)">¡Venga, dale!</button>
         </div>
 
         <div id="phase-2" class="hidden">
-            <h1>Pista 1</h1>
-            <p>Antes iba en <strong>zapatillas</strong> y pedía entrar, aunque le decían que no. Ahora llena estadios solo. ¿Quién es?</p>
-            <input type="text" id="answer-2" placeholder="Escribe el nombre del artista...">
+            <h1>Nivel 1: El Artista</h1>
+            <p>Empecemos fácil. Antes iba en <strong>zapatillas</strong> y pedía entrar, aunque le decían que no. Ahora llena estadios solo. ¿Quién es?</p>
+            <input type="text" id="answer-2" placeholder="Nombre del artista...">
             <br>
-            <button onclick="checkAnswer(2, 'dani martin', 3)">COMPROBAR</button>
-            <p id="error-2" class="error-message">Mmm... no es ese. Piensa en "El Canto del Loco".</p>
+            <button onclick="checkAnswer(2, 'dani martin', 3)">Comprobar</button>
+            <p id="error-2" class="error-message">¡Error! Pista: Fue el líder de 'El Canto del Loco'.</p>
         </div>
 
         <div id="phase-3" class="hidden">
-            <h1>Pista 2</h1>
-            <p>¡Correcto! Ahora dime, ¿dónde se comen las mejores paellas y corren las Fallas?</p>
-            <input type="text" id="answer-3" placeholder="Ciudad...">
+            <h1>Nivel 2: La Canción</h1>
+            <p>¡Bien! Pero eso era fácil. Sigamos.<br>
+            Tiene una canción que es un número, un número con el que todo empieza... o termina. ¿Qué número es?</p>
+            <input type="text" id="answer-3" placeholder="Escribe el número...">
             <br>
-            <button onclick="checkAnswer(3, 'valencia', 4)">COMPROBAR</button>
-            <p id="error-3" class="error-message">Incorrecto. Pista: Río Turia.</p>
+            <button onclick="checkAnswer(3, 'cero', 4)">Comprobar</button>
+            <p id="error-3" class="error-message">Mmm no. Pista: Es redondito y viene antes del uno.</p>
         </div>
 
         <div id="phase-4" class="hidden">
-            <h1>Pista 3</h1>
-            <p>Ya casi estamos. ¿En qué mes dicen que "hace su agosto" la primavera?</p>
-            <input type="text" id="answer-4" placeholder="Mes...">
+            <h1>Nivel 3: Personajes</h1>
+            <p>Vas bien, vas bien...<br>
+            En una de sus canciones más míticas, había una madre que nos tenía a todos locos. ¿Cómo se llamaba esa madre?</p>
+            <input type="text" id="answer-4" placeholder="La madre de...">
             <br>
-            <button onclick="checkAnswer(4, 'mayo', 5)">COMPROBAR</button>
-            <p id="error-4" class="error-message">Incorrecto. Es el quinto mes.</p>
+            <button onclick="checkAnswer(4, 'jose', 5)">Comprobar</button>
+            <p id="error-4" class="error-message">¡Incorrecto! Pista: Rima con "no sé".</p>
         </div>
 
         <div id="phase-5" class="hidden">
-            <h1>¡FELICIDADES!</h1>
-            <p>Prepara las maletas porque nos vamos de concierto.</p>
+            <h1>Nivel 4: El Destino</h1>
+            <p>Vale, ya sabemos a quién vamos a ver. Pero... ¿dónde?<br>
+            Nos vamos a una ciudad donde se comen las mejores paellas, hay fallas y tiene playa.</p>
+            <input type="text" id="answer-5" placeholder="Ciudad...">
+            <br>
+            <button onclick="checkAnswer(5, 'valencia', 6)">Comprobar</button>
+            <p id="error-5" class="error-message">Frío, frío. Pista: Está en la costa este de España.</p>
+        </div>
+
+        <div id="phase-6" class="hidden">
+            <h1>Nivel Final: La Fecha</h1>
+            <p>Último paso. Ya tienes las maletas casi listas.<br>
+            ¿En qué mes dicen que "hace su agosto" la primavera?</p>
+            <input type="text" id="answer-6" placeholder="Mes...">
+            <br>
+            <button onclick="checkAnswer(6, 'mayo', 7)">ABRIR REGALO 🎁</button>
+            <p id="error-6" class="error-message">Incorrecto. Es el quinto mes del año.</p>
+        </div>
+
+        <div id="phase-7" class="hidden">
+            <h1>¡SORPRESAAAAA! 🎉</h1>
+            <p>¡Nos vamos de concierto!</p>
             
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/DxFFBZ2Zq9g?si=start&autoplay=1" title="Dani Martin Directo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            </div>
+
             <div class="ticket">
-                <h2>DANI MARTÍN</h2>
-                <p>GIRA 25 P*TOS AÑOS</p>
-                <p><strong>Lugar:</strong> Valencia</p>
-                <p><strong>Fecha:</strong> Mayo 2026</p>
-                <p>¡Te quiero!</p>
+                <h2>🎫 DANI MARTÍN</h2>
+                <h3>GIRA 25 P*TOS AÑOS</h3>
+                <p>📍 <strong>Lugar:</strong> Valencia (Roig Arena / Plaza de Toros)</p>
+                <p>📅 <strong>Fecha:</strong> Mayo 2026</p>
+                <p style="font-size: 1.2em;">¡Te quiero, hermana!</p>
             </div>
         </div>
 
     </div>
 
     <script>
-        // LÓGICA DEL JUEGO
-        
-        // Función para cambiar de pantalla simplemente (sin validar)
         function nextPhase(current, next) {
             document.getElementById('phase-' + current).classList.add('hidden');
             document.getElementById('phase-' + next).classList.remove('hidden');
         }
 
-        // Función para validar respuestas
         function checkAnswer(currentPhase, correctAnswer, nextPhaseId) {
-            // Obtenemos lo que ha escrito el usuario
             var userAnswer = document.getElementById('answer-' + currentPhase).value;
+            // Limpia tildes y mayúsculas automáticamente
+            var cleanAnswer = userAnswer.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             
-            // Limpiamos la respuesta (quitamos espacios y ponemos minúsculas para comparar)
-            // Así funciona igual si escribe "Valencia " o "VALENCIA"
-            var cleanAnswer = userAnswer.trim().toLowerCase();
-            
-            // Comparamos. Importante: normalize quita tildes (más avanzado), 
-            // pero aquí haremos una comparación simple.
-            
+            // "jose" (sin tilde) es la respuesta correcta en el código, pero si ella escribe "José" funcionará igual
             if (cleanAnswer.includes(correctAnswer)) {
-                // Si es correcto
                 document.getElementById('phase-' + currentPhase).classList.add('hidden');
                 document.getElementById('phase-' + nextPhaseId).classList.remove('hidden');
             } else {
-                // Si es incorrecto
                 document.getElementById('error-' + currentPhase).style.display = 'block';
-                // Efecto de vibración simple en el input
                 var input = document.getElementById('answer-' + currentPhase);
                 input.style.border = "2px solid red";
                 setTimeout(() => { input.style.border = "2px solid #ddd"; }, 1000);
