@@ -3,166 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una sorpresa para ti</title>
+    <title>Protocolo de Acceso: Regalo</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* ESTILOS VISUALES */
+        :root {
+            --primary-color: #b71c1c;
+            --secondary-color: #1a1a1a;
+            --bg-color: #0d0d0d;
+            --text-color: #e0e0e0;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
-            text-align: center;
+            overflow-x: hidden;
         }
 
-        .container {
-            background: white;
+        .main-container {
+            background: #1a1a1a;
             padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 500px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            max-width: 600px;
             width: 100%;
+            position: relative;
+            overflow: hidden;
         }
 
-        h1 { color: #d32f2f; margin-bottom: 20px; }
-        p { font-size: 1.1em; line-height: 1.6; margin-bottom: 30px; }
+        .progress-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #333;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        h1 { color: white; margin-bottom: 25px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
+        p { font-size: 1.1em; line-height: 1.8; margin-bottom: 35px; color: #bbb; }
         
         input[type="text"] {
-            padding: 10px;
-            width: 80%;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            margin-bottom: 20px;
+            background: #252525;
+            padding: 15px;
+            width: 85%;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 18px;
+            color: white;
+            margin-bottom: 25px;
             outline: none;
+            transition: all 0.3s;
+            text-align: center;
+            text-transform: uppercase;
         }
 
         input[type="text"]:focus {
-            border-color: #d32f2f;
+            border-color: var(--primary-color);
+            background: #2a2a2a;
         }
 
-        button {
-            background-color: #333;
+        .btn-action {
+            background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 12px 24px;
+            padding: 15px 45px;
             font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: background 0.3s;
+            border-radius: 4px;
+            transition: all 0.3s;
+            text-transform: uppercase;
         }
 
-        button:hover {
-            background-color: #555;
+        .btn-action:hover {
+            background-color: #f44336;
+            transform: translateY(-2px);
         }
 
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         
         .error-message {
-            color: #d32f2f;
-            font-weight: bold;
-            margin-top: 10px;
+            color: var(--primary-color);
+            font-size: 0.9em;
+            margin-top: -15px;
+            margin-bottom: 20px;
             display: none;
+            text-transform: uppercase;
         }
 
-        /* Estilo para el regalo final */
-        .ticket {
-            border: 2px dashed #d32f2f;
-            padding: 20px;
-            margin-top: 20px;
-            background-color: #fff0f0;
+        .shake { animation: shake 0.5s; border-color: var(--primary-color) !important; }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
         }
+
+        .fade-out-up { animation: fadeOutUp 0.6s forwards; }
+        .fade-in-up { animation: fadeInUp 0.6s forwards; }
+        
+        @keyframes fadeOutUp {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-20px); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #success-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(183, 28, 28, 0.98);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+            font-weight: bold;
+            letter-spacing: 5px;
+        }
+        #success-overlay.active { opacity: 1; pointer-events: all; }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin-bottom: 30px;
+            border: 1px solid #444;
+        }
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        .ticket-data {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: left;
+        }
+        .ticket-data span { color: var(--primary-color); font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <audio id="sfx-success" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+    <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
+
+    <div id="success-overlay">
+        <h2>ACCESO CONCEDIDO</h2>
+    </div>
+
+    <div class="main-container">
+        <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
-        <div id="phase-1">
-            <h1>Hola, hermana</h1>
-            <p>Tengo algo para ti, pero las cosas buenas hay que ganárselas. ¿Estás lista para jugar?</p>
-            <button onclick="nextPhase(1, 2)">COMENZAR</button>
+        <div id="phase-1" class="phase-content">
+            <h1>Sistema de Seguridad</h1>
+            <p>Se ha detectado un paquete digital restringido. Para proceder al desbloqueo, debe verificar su identidad respondiendo a los siguientes protocolos.</p>
+            <button class="btn-action" onclick="startGame()">Iniciar Protocolo</button>
         </div>
 
-        <div id="phase-2" class="hidden">
-            <h1>Pista 1</h1>
-            <p>Antes iba en <strong>zapatillas</strong> y pedía entrar, aunque le decían que no. Ahora llena estadios solo. ¿Quién es?</p>
-            <input type="text" id="answer-2" placeholder="Escribe el nombre del artista...">
-            <br>
-            <button onclick="checkAnswer(2, 'dani martin', 3)">COMPROBAR</button>
-            <p id="error-2" class="error-message">Mmm... no es ese. Piensa en "El Canto del Loco".</p>
+        <div id="phase-2" class="phase-content hidden">
+            <h1>Protocolo 01</h1>
+            <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo, ¿de qué nombre estaríamos hablando?</p>
+            <input type="text" id="input-2" placeholder="Introducir nombre">
+            <p id="error-2" class="error-message">Identidad no reconocida</p>
+            <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Verificar</button>
         </div>
 
-        <div id="phase-3" class="hidden">
-            <h1>Pista 2</h1>
-            <p>¡Correcto! Ahora dime, ¿dónde se comen las mejores paellas y corren las Fallas?</p>
-            <input type="text" id="answer-3" placeholder="Ciudad...">
-            <br>
-            <button onclick="checkAnswer(3, 'valencia', 4)">COMPROBAR</button>
-            <p id="error-3" class="error-message">Incorrecto. Pista: Río Turia.</p>
+        <div id="phase-3" class="phase-content hidden">
+            <h1>Protocolo 02</h1>
+            <p>Es el origen de todo, el vacío absoluto antes de que la música empiece a contar. ¿Qué concepto matemático da título a su reinicio?</p>
+            <input type="text" id="input-3" placeholder="Introducir concepto">
+            <p id="error-3" class="error-message">Dato erróneo</p>
+            <button class="btn-action" onclick="validate(3, 'cero', 4)">Verificar</button>
         </div>
 
-        <div id="phase-4" class="hidden">
-            <h1>Pista 3</h1>
-            <p>Ya casi estamos. ¿En qué mes dicen que "hace su agosto" la primavera?</p>
-            <input type="text" id="answer-4" placeholder="Mes...">
-            <br>
-            <button onclick="checkAnswer(4, 'mayo', 5)">COMPROBAR</button>
-            <p id="error-4" class="error-message">Incorrecto. Es el quinto mes.</p>
+        <div id="phase-4" class="phase-content hidden">
+            <h1>Protocolo 03</h1>
+            <p>En el año 2005, una llamada telefónica confundió a una madre que no sabía quién estaba al otro lado. ¿A quién buscaba esa llamada?</p>
+            <input type="text" id="input-4" placeholder="Introducir nombre">
+            <p id="error-4" class="error-message">Fallo de conexión</p>
+            <button class="btn-action" onclick="validate(4, 'jose', 5)">Verificar</button>
         </div>
 
-        <div id="phase-5" class="hidden">
-            <h1>¡FELICIDADES!</h1>
-            <p>Prepara las maletas porque nos vamos de concierto.</p>
+        <div id="phase-5" class="phase-content hidden">
+            <h1>Protocolo 04</h1>
+            <p>Donde la seda tuvo su mercado, donde el fuego purifica la primavera y el murciélago guarda el estadio. ¿Hacia qué coordenadas nos dirigimos?</p>
+            <input type="text" id="input-5" placeholder="Introducir destino">
+            <p id="error-5" class="error-message">Coordenadas incorrectas</p>
+            <button class="btn-action" onclick="validate(5, 'valencia', 6)">Verificar</button>
+        </div>
+
+        <div id="phase-6" class="phase-content hidden">
+            <h1>Protocolo Final</h1>
+            <p>Es el mes en el que los comuneros se alzaron y las flores alcanzan su máximo esplendor. El quinto pilar del año. ¿Cuándo es la cita?</p>
+            <input type="text" id="input-6" placeholder="Introducir mes">
+            <p id="error-6" class="error-message">Fecha no válida</p>
+            <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Desbloquear Regalo</button>
+        </div>
+
+        <div id="phase-7" class="phase-content hidden">
+            <h1>Desbloqueo Completado</h1>
+            <p>Tu regalo ha sido procesado con éxito. Nos vemos en el Roig Arena.</p>
             
-            <div class="ticket">
-                <h2>DANI MARTÍN</h2>
-                <p>GIRA 25 P*TOS AÑOS</p>
-                <p><strong>Lugar:</strong> Valencia</p>
-                <p><strong>Fecha:</strong> Mayo 2026</p>
-                <p>¡Te quiero!</p>
+            <div class="video-wrapper">
+                <iframe id="final-video" src="https://www.youtube.com/embed/DxFFBZ2Zq9g?autoplay=1&start=48" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="ticket-data">
+                <p>EVENTO: <span>DANI MARTÍN - 25 P*TOS AÑOS</span></p>
+                <p>UBICACIÓN: <span>VALENCIA</span></p>
+                <p>FECHA: <span>MAYO 2026</span></p>
+                <p>NOTAS: <span>DOS ENTRADAS CONFIRMADAS</span></p>
             </div>
         </div>
-
     </div>
 
     <script>
-        // LÓGICA DEL JUEGO
-        
-        // Función para cambiar de pantalla simplemente (sin validar)
-        function nextPhase(current, next) {
-            document.getElementById('phase-' + current).classList.add('hidden');
-            document.getElementById('phase-' + next).classList.remove('hidden');
+        const totalPhases = 6;
+        const sfxSuccess = document.getElementById("sfx-success");
+        const sfxError = document.getElementById("sfx-error");
+
+        function startGame() {
+            sfxSuccess.play().catch(() => {});
+            transition(1, 2);
+            updateProgress(1);
         }
 
-        // Función para validar respuestas
-        function checkAnswer(currentPhase, correctAnswer, nextPhaseId) {
-            // Obtenemos lo que ha escrito el usuario
-            var userAnswer = document.getElementById('answer-' + currentPhase).value;
-            
-            // Limpiamos la respuesta (quitamos espacios y ponemos minúsculas para comparar)
-            // Así funciona igual si escribe "Valencia " o "VALENCIA"
-            var cleanAnswer = userAnswer.trim().toLowerCase();
-            
-            // Comparamos. Importante: normalize quita tildes (más avanzado), 
-            // pero aquí haremos una comparación simple.
-            
-            if (cleanAnswer.includes(correctAnswer)) {
-                // Si es correcto
-                document.getElementById('phase-' + currentPhase).classList.add('hidden');
-                document.getElementById('phase-' + nextPhaseId).classList.remove('hidden');
+        function validate(currentPhaseId, correctAnswer, nextPhaseId, isFinal = false) {
+            const inputElement = document.getElementById('input-' + currentPhaseId);
+            const errorElement = document.getElementById('error-' + currentPhaseId);
+            let userAnswer = inputElement.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+            if (userAnswer.includes(correctAnswer)) {
+                errorElement.style.display = 'none';
+                inputElement.blur();
+                
+                if (isFinal) {
+                    launchConfetti();
+                    transition(currentPhaseId, nextPhaseId);
+                    updateProgress(totalPhases);
+                } else {
+                    sfxSuccess.play().catch(() => {});
+                    showSuccessMessage();
+                    updateProgress(currentPhaseId);
+                    setTimeout(() => {
+                        transition(currentPhaseId, nextPhaseId);
+                    }, 1200);
+                }
             } else {
-                // Si es incorrecto
-                document.getElementById('error-' + currentPhase).style.display = 'block';
-                // Efecto de vibración simple en el input
-                var input = document.getElementById('answer-' + currentPhase);
-                input.style.border = "2px solid red";
-                setTimeout(() => { input.style.border = "2px solid #ddd"; }, 1000);
+                sfxError.play().catch(() => {});
+                errorElement.style.display = 'block';
+                inputElement.classList.add('shake');
+                setTimeout(() => inputElement.classList.remove('shake'), 500);
             }
+        }
+
+        function showSuccessMessage() {
+            const overlay = document.getElementById('success-overlay');
+            overlay.classList.add('active');
+            setTimeout(() => overlay.classList.remove('active'), 1000);
+        }
+
+        function transition(current, next) {
+            const currentEl = document.getElementById('phase-' + current);
+            const nextEl = document.getElementById('phase-' + next);
+            currentEl.classList.add('fade-out-up');
+            setTimeout(() => {
+                currentEl.classList.add('hidden');
+                currentEl.classList.remove('fade-out-up');
+                nextEl.classList.remove('hidden');
+                nextEl.classList.add('fade-in-up');
+                const nextInput = document.getElementById('input-' + next);
+                if (nextInput) nextInput.focus();
+            }, 500); 
+        }
+
+        function updateProgress(phaseCompleted) {
+            const percentage = (phaseCompleted / totalPhases) * 100;
+            document.getElementById('progress').style.width = percentage + '%';
+        }
+
+        function launchConfetti() {
+            var end = Date.now() + (4 * 1000);
+            var colors = ['#b71c1c', '#ffffff', '#ff5252'];
+
+            (function frame() {
+              confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+              confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+              if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
         }
     </script>
 </body>
