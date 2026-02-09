@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocolo de Acceso: Regalo</title>
+    <title>Protocolo de Acceso: Restringido</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -40,10 +40,7 @@
 
         .progress-container {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
+            top: 0; left: 0; width: 100%; height: 4px;
             background-color: #333;
         }
         .progress-bar {
@@ -68,13 +65,9 @@
             outline: none;
             transition: all 0.3s;
             text-align: center;
-            text-transform: uppercase;
         }
 
-        input[type="text"]:focus {
-            border-color: var(--primary-color);
-            background: #2a2a2a;
-        }
+        input[type="text"]:focus { border-color: var(--primary-color); background: #2a2a2a; }
 
         .btn-action {
             background-color: var(--primary-color);
@@ -90,10 +83,7 @@
             text-transform: uppercase;
         }
 
-        .btn-action:hover {
-            background-color: #f44336;
-            transform: translateY(-2px);
-        }
+        .btn-action:hover { background-color: #f44336; transform: translateY(-2px); }
 
         .hidden { display: none !important; }
         
@@ -103,7 +93,6 @@
             margin-top: -15px;
             margin-bottom: 20px;
             display: none;
-            text-transform: uppercase;
         }
 
         .shake { animation: shake 0.5s; border-color: var(--primary-color) !important; }
@@ -116,14 +105,8 @@
         .fade-out-up { animation: fadeOutUp 0.6s forwards; }
         .fade-in-up { animation: fadeInUp 0.6s forwards; }
         
-        @keyframes fadeOutUp {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(-20px); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeOutUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
         #success-overlay {
             position: fixed;
@@ -138,7 +121,6 @@
             pointer-events: none;
             transition: opacity 0.4s;
             font-weight: bold;
-            letter-spacing: 5px;
         }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
@@ -148,6 +130,7 @@
             height: 0;
             margin-bottom: 30px;
             border: 1px solid #444;
+            background: #000;
         }
         .video-wrapper iframe {
             position: absolute;
@@ -174,65 +157,63 @@
     <div class="main-container">
         <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
-        <div id="phase-1" class="phase-content">
+        <div id="phase-1">
             <h1>Sistema de Seguridad</h1>
-            <p>Se ha detectado un paquete digital restringido. Para proceder al desbloqueo, debe verificar su identidad respondiendo a los siguientes protocolos.</p>
-            <button class="btn-action" onclick="startGame()">Iniciar Protocolo</button>
+            <p>Se ha detectado un paquete digital restringido. Proceda a la verificación de identidad.</p>
+            <button class="btn-action" onclick="startGame()">Iniciar</button>
         </div>
 
-        <div id="phase-2" class="phase-content hidden">
+        <div id="phase-2" class="hidden">
             <h1>Protocolo 01</h1>
-            <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo, ¿de qué nombre estaríamos hablando?</p>
-            <input type="text" id="input-2" placeholder="Introducir nombre">
+            <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo, ¿de qué nombre hablamos?</p>
+            <input type="text" id="input-2" placeholder="Nombre...">
             <p id="error-2" class="error-message">Identidad no reconocida</p>
             <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Verificar</button>
         </div>
 
-        <div id="phase-3" class="phase-content hidden">
+        <div id="phase-3" class="hidden">
             <h1>Protocolo 02</h1>
-            <p>Es el origen de todo, el vacío absoluto antes de que la música empiece a contar. ¿Qué concepto matemático da título a su reinicio?</p>
-            <input type="text" id="input-3" placeholder="Introducir concepto">
+            <p>Es el origen de todo, el vacío absoluto antes de que la música empiece a contar. ¿Qué concepto da título a su reinicio?</p>
+            <input type="text" id="input-3" placeholder="Concepto...">
             <p id="error-3" class="error-message">Dato erróneo</p>
             <button class="btn-action" onclick="validate(3, 'cero', 4)">Verificar</button>
         </div>
 
-        <div id="phase-4" class="phase-content hidden">
+        <div id="phase-4" class="hidden">
             <h1>Protocolo 03</h1>
-            <p>En el año 2005, una llamada telefónica confundió a una madre que no sabía quién estaba al otro lado. ¿A quién buscaba esa llamada?</p>
-            <input type="text" id="input-4" placeholder="Introducir nombre">
+            <p>En 2005, una llamada confundió a una madre que no sabía quién estaba al otro lado. ¿A quién buscaba esa llamada?</p>
+            <input type="text" id="input-4" placeholder="Nombre...">
             <p id="error-4" class="error-message">Fallo de conexión</p>
             <button class="btn-action" onclick="validate(4, 'jose', 5)">Verificar</button>
         </div>
 
-        <div id="phase-5" class="phase-content hidden">
+        <div id="phase-5" class="hidden">
             <h1>Protocolo 04</h1>
-            <p>Donde la seda tuvo su mercado, donde el fuego purifica la primavera y el murciélago guarda el estadio. ¿Hacia qué coordenadas nos dirigimos?</p>
-            <input type="text" id="input-5" placeholder="Introducir destino">
+            <p>Donde la seda tuvo su mercado y el fuego purifica la primavera. ¿Hacia qué coordenadas nos dirigimos?</p>
+            <input type="text" id="input-5" placeholder="Destino...">
             <p id="error-5" class="error-message">Coordenadas incorrectas</p>
             <button class="btn-action" onclick="validate(5, 'valencia', 6)">Verificar</button>
         </div>
 
-        <div id="phase-6" class="phase-content hidden">
+        <div id="phase-6" class="hidden">
             <h1>Protocolo Final</h1>
-            <p>Es el mes en el que los comuneros se alzaron y las flores alcanzan su máximo esplendor. El quinto pilar del año. ¿Cuándo es la cita?</p>
-            <input type="text" id="input-6" placeholder="Introducir mes">
+            <p>El quinto pilar del año, el mes de las flores y los comuneros. ¿Cuándo es la cita?</p>
+            <input type="text" id="input-6" placeholder="Mes...">
             <p id="error-6" class="error-message">Fecha no válida</p>
             <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Desbloquear Regalo</button>
         </div>
 
-        <div id="phase-7" class="phase-content hidden">
+        <div id="phase-7" class="hidden">
             <h1>Desbloqueo Completado</h1>
-            <p>Tu regalo ha sido procesado con éxito. Nos vemos en el Roig Arena.</p>
+            <p>Tu regalo ha sido procesado. Nos vemos en el Roig Arena.</p>
             
-            <div class="video-wrapper">
-                <iframe id="final-video" src="https://www.youtube.com/embed/DxFFBZ2Zq9g?autoplay=1&start=48" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            </div>
+            <div class="video-wrapper" id="video-container">
+                </div>
 
             <div class="ticket-data">
                 <p>EVENTO: <span>DANI MARTÍN - 25 P*TOS AÑOS</span></p>
                 <p>UBICACIÓN: <span>VALENCIA</span></p>
                 <p>FECHA: <span>MAYO 2026</span></p>
-                <p>NOTAS: <span>DOS ENTRADAS CONFIRMADAS</span></p>
             </div>
         </div>
     </div>
@@ -255,9 +236,11 @@
 
             if (userAnswer.includes(correctAnswer)) {
                 errorElement.style.display = 'none';
-                inputElement.blur();
-                
                 if (isFinal) {
+                    // INYECTAR VÍDEO JUSTO AL HACER CLIC
+                    const videoContainer = document.getElementById('video-container');
+                    videoContainer.innerHTML = '<iframe src="https://www.youtube.com/embed/DxFFBZ2Zq9g?autoplay=1&start=48&rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                    
                     launchConfetti();
                     transition(currentPhaseId, nextPhaseId);
                     updateProgress(totalPhases);
@@ -265,9 +248,7 @@
                     sfxSuccess.play().catch(() => {});
                     showSuccessMessage();
                     updateProgress(currentPhaseId);
-                    setTimeout(() => {
-                        transition(currentPhaseId, nextPhaseId);
-                    }, 1200);
+                    setTimeout(() => transition(currentPhaseId, nextPhaseId), 1200);
                 }
             } else {
                 sfxError.play().catch(() => {});
@@ -289,7 +270,6 @@
             currentEl.classList.add('fade-out-up');
             setTimeout(() => {
                 currentEl.classList.add('hidden');
-                currentEl.classList.remove('fade-out-up');
                 nextEl.classList.remove('hidden');
                 nextEl.classList.add('fade-in-up');
                 const nextInput = document.getElementById('input-' + next);
@@ -305,11 +285,10 @@
         function launchConfetti() {
             var end = Date.now() + (4 * 1000);
             var colors = ['#b71c1c', '#ffffff', '#ff5252'];
-
             (function frame() {
               confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
               confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
-              if (Date.now() < end) { requestAnimationFrame(frame); }
+              if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
     </script>
