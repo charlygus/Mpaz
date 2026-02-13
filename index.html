@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Una Sorpresa para Ti</title>
+    <title>¿Qué será?</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            /* NUEVA PALETA "CIELO DE MADRID" */
-            --primary-color: #ff7e67; /* Coral cálido */
+            /* PALETA "CIELO DE MADRID" */
+            --primary-color: #ff7e67;
             --primary-gradient: linear-gradient(45deg, #ff7e67, #ff6b6b);
-            --bg-gradient: linear-gradient(135deg, #fce38a 0%, #f38181 100%); /* Atardecer pastel */
+            --bg-gradient: linear-gradient(135deg, #fce38a 0%, #f38181 100%);
             --container-bg: #ffffff;
             --text-color: #666666;
             --heading-color: #333333;
@@ -21,7 +21,14 @@
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--bg-gradient); /* Fondo degradado */
+            background-color: #f38181; /* Color de respaldo */
+            
+            /* AQUÍ ESTÁ EL TRUCO DEL FONDO CON TEXTO:
+               Combinamos el degradado con una imagen SVG generada por código que repite "¿Qué será?" */
+            background-image: 
+                url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-weight='bold' font-size='18' fill='%23ffffff' fill-opacity='0.25' transform='rotate(-45 75 75)' text-anchor='middle' dominant-baseline='middle'%3E¿Qué será?%3C/text%3E%3C/svg%3E"),
+                var(--bg-gradient);
+            
             color: var(--text-color);
             display: flex;
             justify-content: center;
@@ -35,15 +42,14 @@
         .main-container {
             background: var(--container-bg);
             padding: 45px;
-            border-radius: 24px; /* Esquinas mucho más redondeadas */
-            /* Sombra suave y difusa de color */
-            box-shadow: 0 20px 40px rgba(243, 129, 129, 0.3); 
-            border: none;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15); /* Sombra un pelín más marcada para destacar sobre el patrón */
             max-width: 600px;
             width: 100%;
             position: relative;
             overflow: hidden;
             text-align: center;
+            z-index: 10; /* Aseguramos que la tarjeta esté por encima del fondo */
         }
 
         .progress-container {
@@ -53,7 +59,7 @@
         }
         .progress-bar {
             height: 100%;
-            background: var(--primary-gradient); /* Barra con degradado */
+            background: var(--primary-gradient);
             width: 0%;
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             border-radius: 0 3px 3px 0;
@@ -64,7 +70,7 @@
             margin-bottom: 25px; 
             font-weight: 700; 
             letter-spacing: 0.5px; 
-            text-transform: none; /* Quitamos mayúsculas agresivas */
+            text-transform: none;
             font-size: 2rem; 
         }
         p { font-size: 1.15em; line-height: 1.7; margin-bottom: 35px; color: var(--text-color); }
@@ -74,7 +80,7 @@
             padding: 18px;
             width: 80%;
             border: 2px solid #eeeeee;
-            border-radius: 12px; /* Inputs redonditos */
+            border-radius: 12px;
             font-size: 18px;
             color: var(--heading-color);
             margin-bottom: 25px;
@@ -98,7 +104,7 @@
             font-weight: 600;
             letter-spacing: 0.5px;
             cursor: pointer;
-            border-radius: 50px; /* Botones estilo píldora */
+            border-radius: 50px;
             transition: all 0.3s;
             text-transform: none;
             box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
@@ -136,7 +142,6 @@
         #success-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            /* Degradado de éxito bonito */
             background: linear-gradient(135deg, rgba(255, 126, 103, 0.95), rgba(255, 107, 107, 0.95));
             color: white;
             display: flex;
@@ -155,34 +160,31 @@
         }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
-        /* --- ESTILOS DE LA ENTRADA (TICKET REIMAGINADO) --- */
+        /* --- ESTILOS DE LA ENTRADA --- */
         .ticket-wrapper {
             background: #fff;
-            /* Borde dorado elegante */
             border: 2px solid var(--accent-gold);
             border-left: 8px solid var(--accent-gold);
             padding: 30px;
             border-radius: 16px;
             margin-bottom: 30px;
             position: relative;
-            /* Sombra dorada suave */
             box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15);
             text-align: left;
         }
         
-        /* Círculos decorativos del ticket (ahora blancos) */
         .ticket-wrapper::before, .ticket-wrapper::after {
             content: '';
             position: absolute;
             right: -12px;
             width: 24px;
             height: 24px;
-            background-color: var(--container-bg); /* Del mismo color que el contenedor */
-            border: 2px solid var(--accent-gold); /* Borde para que se note */
+            background-color: var(--container-bg); 
+            border: 2px solid var(--accent-gold);
             border-radius: 50%;
         }
         .ticket-wrapper::before { top: 35%; border-top-color: transparent; border-right-color: transparent; transform: rotate(45deg); }
-        .ticket-wrapper::after { top: 35%; } /* Simplificado para este estilo */
+        .ticket-wrapper::after { top: 35%; }
 
         .ticket-header {
             font-size: 0.9rem;
@@ -239,19 +241,18 @@
             font-weight: 700;
         }
 
-        /* --- ESTILOS DEL VIDEO PEQUEÑO --- */
         .mini-video-container {
             width: 100%;
             max-width: 340px; 
             margin: 0 auto;   
-            border-radius: 16px; /* Más redondeado */
+            border-radius: 16px;
             overflow: hidden;
             border: none;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra más sutil */
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             position: relative;
-            padding-bottom: 191px; /* Ajuste de altura */
+            padding-bottom: 191px;
             height: 0;
-            background: #eee; /* Fondo claro mientras carga */
+            background: #eee;
         }
 
         .mini-video-container iframe {
@@ -266,16 +267,15 @@
             margin-bottom: 15px;
             font-weight: 600;
         }
-
     </style>
 </head>
 <body>
 
-    <audio id="sfx-success" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+    <audio id="sfx-success" src="https://assets.mixkit.co/active_storage/sfx/2013/2013-preview.mp3" preload="auto"></audio>
     <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
-        <h2>¡Correcto! ✨</h2>
+        <h2>¡Bravo! 👏</h2>
     </div>
 
     <div class="main-container">
@@ -290,7 +290,7 @@
         <div id="phase-2" class="hidden">
             <h1>Primera Pista</h1>
             <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo... ¿de qué nombre estamos hablando?</p>
-            <input type="text" id="input-2" placeholder="Tu respuesta aquí..." autocomplete="off">
+            <input type="text" id="input-2" placeholder="Tu respuesta aquí..." autocomplete="off" onkeypress="checkEnter(event, 2, 'dani martin', 3)">
             <p id="error-2" class="error-message">Mmm, prueba otra vez...</p>
             <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Comprobar</button>
         </div>
@@ -298,7 +298,7 @@
         <div id="phase-3" class="hidden">
             <h1>Segunda Pista</h1>
             <p>Es el origen de todo, el vacío absoluto antes de que la música empiece a contar. ¿Qué concepto da título a su reinicio?</p>
-            <input type="text" id="input-3" placeholder="El concepto es..." autocomplete="off">
+            <input type="text" id="input-3" placeholder="El concepto es..." autocomplete="off" onkeypress="checkEnter(event, 3, 'cero', 4)">
             <p id="error-3" class="error-message">Casi, pero no...</p>
             <button class="btn-action" onclick="validate(3, 'cero', 4)">Comprobar</button>
         </div>
@@ -306,7 +306,7 @@
         <div id="phase-4" class="hidden">
             <h1>Tercera Pista</h1>
             <p>En 2005, una llamada confundió a una madre que no sabía quién estaba al otro lado. ¿Por quién preguntaban?</p>
-            <input type="text" id="input-4" placeholder="Nombre..." autocomplete="off">
+            <input type="text" id="input-4" placeholder="Nombre..." autocomplete="off" onkeypress="checkEnter(event, 4, 'jose', 5)">
             <p id="error-4" class="error-message">Ese no es...</p>
             <button class="btn-action" onclick="validate(4, 'jose', 5)">Comprobar</button>
         </div>
@@ -314,7 +314,7 @@
         <div id="phase-5" class="hidden">
             <h1>Cuarta Pista</h1>
             <p>Donde la seda tuvo su mercado y el fuego purifica la primavera. ¿Hacia qué ciudad nos dirigimos?</p>
-            <input type="text" id="input-5" placeholder="Ciudad..." autocomplete="off">
+            <input type="text" id="input-5" placeholder="Ciudad..." autocomplete="off" onkeypress="checkEnter(event, 5, 'valencia', 6)">
             <p id="error-5" class="error-message">Revisa el mapa...</p>
             <button class="btn-action" onclick="validate(5, 'valencia', 6)">Comprobar</button>
         </div>
@@ -322,7 +322,7 @@
         <div id="phase-6" class="hidden">
             <h1>Última Pregunta</h1>
             <p>El quinto pilar del año, el mes de las flores. ¿Cuándo es la gran cita?</p>
-            <input type="text" id="input-6" placeholder="Mes..." autocomplete="off">
+            <input type="text" id="input-6" placeholder="Mes..." autocomplete="off" onkeypress="checkEnter(event, 6, 'mayo', 7, true)">
             <p id="error-6" class="error-message">Fecha incorrecta...</p>
             <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Ver mi Regalo 🎁</button>
         </div>
@@ -353,7 +353,7 @@
 
             <p class="soundtrack-label">🎵 Banda sonora del momento (Espera al subidón...)</p>
             <div class="mini-video-container" id="video-container">
-                </div>
+            </div>
 
         </div>
     </div>
@@ -364,45 +364,59 @@
         const sfxError = document.getElementById("sfx-error");
 
         function startGame() {
+            // Un pequeño aplauso para empezar con ánimo
+            sfxSuccess.volume = 0.5; // Un poco más bajo al inicio
             sfxSuccess.play().catch(() => {});
             transition(1, 2);
             updateProgress(1);
         }
 
+        // Función para el ENTER
+        function checkEnter(event, currentPhaseId, correctAnswer, nextPhaseId, isFinal = false) {
+            if (event.key === "Enter") {
+                validate(currentPhaseId, correctAnswer, nextPhaseId, isFinal);
+            }
+        }
+
         function validate(currentPhaseId, correctAnswer, nextPhaseId, isFinal = false) {
             const inputElement = document.getElementById('input-' + currentPhaseId);
             const errorElement = document.getElementById('error-' + currentPhaseId);
-            // Normalizamos la respuesta (quitamos tildes, mayúsculas y espacios extra)
+            
             let userAnswer = inputElement.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
             if (userAnswer.includes(correctAnswer)) {
                 errorElement.style.display = 'none';
                 
                 if (isFinal) {
-                    // --- AQUÍ OCURRE LA MAGIA DEL VIDEO ---
-                    const youtubeID = "g7r2j6_Tulc"; // Zapatillas
-                    const segundosInicio = 117; // 1:57
+                    const youtubeID = "g7r2j6_Tulc"; 
+                    const segundosInicio = 117; 
                     
                     const videoContainer = document.getElementById('video-container');
                     
-                    // Inyectamos el iframe. 
                     videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeID}?autoplay=1&start=${segundosInicio}&rel=0&controls=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                     
-                    launchConfetti(); // Explosión de confeti
+                    launchConfetti(); 
+                    
+                    // APLAUSOS FINALES A TOPE DE VOLUMEN
+                    sfxSuccess.volume = 1.0;
+                    sfxSuccess.currentTime = 0;
+                    sfxSuccess.play().catch(() => {});
+
                     transition(currentPhaseId, nextPhaseId);
                     updateProgress(totalPhases);
                 } else {
-                    // Acierto normal
+                    sfxSuccess.volume = 0.8; // Volumen normal
+                    sfxSuccess.currentTime = 0; 
                     sfxSuccess.play().catch(() => {});
                     showSuccessMessage();
                     updateProgress(currentPhaseId);
-                    setTimeout(() => transition(currentPhaseId, nextPhaseId), 1000); // Un poco más rápido entre fases
+                    setTimeout(() => transition(currentPhaseId, nextPhaseId), 1200); // Un pelín más de tiempo para disfrutar el aplauso
                 }
             } else {
-                // Error
+                sfxError.currentTime = 0;
                 sfxError.play().catch(() => {});
                 errorElement.style.display = 'block';
-                inputElement.classList.add('shake'); // Efecto de vibración
+                inputElement.classList.add('shake'); 
                 setTimeout(() => inputElement.classList.remove('shake'), 500);
             }
         }
@@ -410,22 +424,20 @@
         function showSuccessMessage() {
             const overlay = document.getElementById('success-overlay');
             overlay.classList.add('active');
-            setTimeout(() => overlay.classList.remove('active'), 800);
+            setTimeout(() => overlay.classList.remove('active'), 1000);
         }
 
         function transition(current, next) {
             const currentEl = document.getElementById('phase-' + current);
             const nextEl = document.getElementById('phase-' + next);
             
-            // Animación de salida
             currentEl.classList.add('fade-out-up');
             
             setTimeout(() => {
                 currentEl.classList.add('hidden');
                 nextEl.classList.remove('hidden');
-                nextEl.classList.add('fade-in-up'); // Animación de entrada
+                nextEl.classList.add('fade-in-up'); 
                 
-                // Poner el foco en el siguiente input automáticamente
                 const nextInput = document.getElementById('input-' + next);
                 if (nextInput) nextInput.focus();
             }, 500); 
@@ -436,7 +448,6 @@
             document.getElementById('progress').style.width = percentage + '%';
         }
 
-        // Confeti más espectacular con colores cálidos
         function launchConfetti() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
@@ -452,7 +463,6 @@
                 }
 
                 var particleCount = 50 * (timeLeft / duration);
-                // Lanzamos confeti con colores de la nueva paleta (coral, dorado, blanco)
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#ff7e67', '#ffffff', '#d4af37'] }));
                 confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#ff6b6b', '#fce38a'] }));
             }, 250);
