@@ -21,6 +21,7 @@
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f38181; 
+            /* PATRÓN DE FONDO "QUÉ SERÁ" */
             background-image: 
                 url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-weight='bold' font-style='italic' font-size='14' fill='%23ffffff' fill-opacity='0.2' transform='rotate(-45 60 60)' text-anchor='middle' dominant-baseline='middle'%3E¿Qué será?%3C/text%3E%3C/svg%3E"),
                 var(--bg-gradient);
@@ -60,7 +61,7 @@
             border-radius: 0 3px 3px 0;
         }
 
-        h1 { color: var(--heading-color); margin-bottom: 25px; font-weight: 700; font-size: 2rem; }
+        h1 { color: var(--heading-color); margin-bottom: 25px; font-weight: 800; font-size: 2.2rem; line-height: 1.2; }
         p { font-size: 1.15em; line-height: 1.7; margin-bottom: 35px; color: var(--text-color); }
         
         input[type="text"] {
@@ -110,6 +111,7 @@
         #success-overlay h2 { font-weight: 800; font-size: 3rem; text-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
+        /* TICKET */
         .ticket-wrapper {
             background: #fff; border: 2px solid var(--accent-gold); border-left: 8px solid var(--accent-gold);
             padding: 30px; border-radius: 16px; margin-bottom: 30px; position: relative;
@@ -146,7 +148,7 @@
         <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
         <div id="phase-1">
-            <h1>Hola. Tengo una sorpresa para ti...</h1>
+            <h1>¡HOLA! ¡TENGO UNA SORPRESA INCREÍBLE PARA TI! 🎁</h1>
             <p>Pero para conseguirla, vamos a ver si conoces las claves. ¿Jugamos?</p>
             <button class="btn-action" onclick="startGame()">Empezar el Juego</button>
         </div>
@@ -192,7 +194,7 @@
         </div>
 
         <div id="phase-7" class="hidden">
-            <h1>Lo has conseguido</h1>
+            <h1>¡SÍIIII! ¡LO HAS CONSEGUIDO! 🎉</h1>
             <p style="margin-bottom: 25px;">Prepara la voz, porque nos vamos de concierto.</p>
             
             <div class="ticket-wrapper">
@@ -214,7 +216,6 @@
                     </div>
                 </div>
             </div>
-            <p>Escucha cómo suena...</p>
         </div>
     </div>
 
@@ -241,19 +242,18 @@
 
             if (userAnswer.includes(correctAnswer)) {
                 errorElement.style.display = 'none';
-                
-                // ARREGLO DELAY: Limpiar input justo al acertar
+                // Borrado instantáneo del texto
                 inputElement.value = '';
 
                 if (isFinal) {
                     launchConfetti(); 
                     
-                    // Suenan aplausos
+                    // Sonido de aplausos potente
                     sfxApplause.volume = 1.0;
                     sfxApplause.currentTime = 0;
                     sfxApplause.play().catch(() => {});
 
-                    // CANCIÓN FINAL: Salto al 1:57 (117s) y volumen 1.0
+                    // Canción final al 100% y en el segundo exacto
                     finalSong.volume = 1.0;
                     finalSong.currentTime = 117; 
                     finalSong.play().catch(error => console.log("Error audio:", error));
@@ -298,15 +298,32 @@
         }
 
         function launchConfetti() {
-            var duration = 3 * 1000; var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 45, spread: 360, ticks: 100, zIndex: 0 };
+
             var random = function(min, max) { return Math.random() * (max - min) + min; };
+
             var interval = setInterval(function() {
                 var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                var particleCount = 50 * (timeLeft / duration);
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#ff7e67', '#ffffff', '#d4af37'] }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#ff6b6b', '#fce38a'] }));
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 100 * (timeLeft / duration);
+                // Lanzamiento desde la izquierda
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 }, 
+                    colors: ['#ff7e67', '#ffffff', '#d4af37'] 
+                }));
+                // Lanzamiento desde la derecha
+                confetti(Object.assign({}, defaults, { 
+                    particleCount, 
+                    origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 }, 
+                    colors: ['#ff6b6b', '#fce38a'] 
+                }));
             }, 250);
         }
     </script>
