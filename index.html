@@ -7,10 +7,11 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary-color: #b71c1c;
+            --primary-color: #b71c1c; /* Rojo Dani Martín */
             --secondary-color: #1a1a1a;
             --bg-color: #0d0d0d;
             --text-color: #e0e0e0;
+            --gold-accent: #d4af37; /* Toque dorado para el ticket */
         }
 
         body {
@@ -29,13 +30,14 @@
         .main-container {
             background: #1a1a1a;
             padding: 40px;
-            border-radius: 8px;
+            border-radius: 12px;
             border: 1px solid #333;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             max-width: 600px;
             width: 100%;
             position: relative;
             overflow: hidden;
+            text-align: center; /* Centramos todo por defecto para que quede mejor */
         }
 
         .progress-container {
@@ -50,15 +52,15 @@
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        h1 { color: white; margin-bottom: 25px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
-        p { font-size: 1.1em; line-height: 1.8; margin-bottom: 35px; color: #bbb; }
+        h1 { color: white; margin-bottom: 25px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem; }
+        p { font-size: 1.1em; line-height: 1.6; margin-bottom: 35px; color: #bbb; }
         
         input[type="text"] {
             background: #252525;
             padding: 15px;
-            width: 85%;
+            width: 80%;
             border: 1px solid #444;
-            border-radius: 4px;
+            border-radius: 6px;
             font-size: 18px;
             color: white;
             margin-bottom: 25px;
@@ -67,35 +69,37 @@
             text-align: center;
         }
 
-        input[type="text"]:focus { border-color: var(--primary-color); background: #2a2a2a; }
+        input[type="text"]:focus { border-color: var(--primary-color); background: #2a2a2a; box-shadow: 0 0 10px rgba(183, 28, 28, 0.3); }
 
         .btn-action {
             background-color: var(--primary-color);
             color: white;
             border: none;
-            padding: 15px 45px;
+            padding: 14px 40px;
             font-size: 16px;
             font-weight: bold;
             letter-spacing: 1px;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.3s;
             text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(183, 28, 28, 0.4);
         }
 
-        .btn-action:hover { background-color: #f44336; transform: translateY(-2px); }
+        .btn-action:hover { background-color: #d32f2f; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(183, 28, 28, 0.6); }
 
         .hidden { display: none !important; }
         
         .error-message {
-            color: var(--primary-color);
+            color: #ff5252;
             font-size: 0.9em;
             margin-top: -15px;
             margin-bottom: 20px;
             display: none;
+            font-weight: 500;
         }
 
-        .shake { animation: shake 0.5s; border-color: var(--primary-color) !important; }
+        .shake { animation: shake 0.5s; border-color: #ff5252 !important; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
@@ -121,58 +125,111 @@
             pointer-events: none;
             transition: opacity 0.4s;
             font-weight: bold;
+            font-size: 2rem;
+            letter-spacing: 5px;
         }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
-        /* CONTENEDOR DE RESULTADOS */
-        .result-wrapper {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        /* --- ESTILOS DE LA ENTRADA (TICKET) --- */
+        .ticket-wrapper {
+            background: linear-gradient(135deg, #222 0%, #1a1a1a 100%);
+            border: 1px solid #444;
+            border-left: 5px solid var(--primary-color);
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: left; /* Alineado a la izquierda para parecer una entrada real */
+        }
+        
+        /* Efecto de "cortes" del ticket */
+        .ticket-wrapper::before, .ticket-wrapper::after {
+            content: '';
+            position: absolute;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background-color: var(--bg-color); /* Mismo color que el fondo de la página */
+            border-radius: 50%;
+        }
+        .ticket-wrapper::before { top: 40%; }
+        .ticket-wrapper::after { top: 40%; } /* Ajuste visual */
+
+        .ticket-header {
+            font-size: 0.8rem;
+            color: #888;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 5px;
         }
 
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 aspect ratio */
-            height: 0;
-            border: 1px solid #444;
-            background: #000;
+        .ticket-title {
+            font-size: 1.6rem;
+            color: white;
+            font-weight: bold;
+            margin: 10px 0;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+        
+        .ticket-title span {
+            color: var(--primary-color);
+        }
+
+        .ticket-details {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .ticket-info-box {
+            text-align: left;
+        }
+        
+        .ticket-label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+            display: block;
+        }
+        
+        .ticket-value {
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* --- ESTILOS DEL VIDEO PEQUEÑO --- */
+        .mini-video-container {
+            width: 100%;
+            max-width: 320px; /* Tamaño máximo limitado */
+            margin: 0 auto;   /* Centrado */
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(183, 28, 28, 0.2);
+            border: 1px solid #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            padding-bottom: 180px; /* Altura fija para el contenedor pequeño (16:9 aprox de 320px) */
+            height: 0;
+            background: black;
         }
-        .video-wrapper iframe {
+
+        .mini-video-container iframe {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
         }
-
-        .spotify-album-wrapper {
-            border-radius: 12px;
-            overflow: hidden;
-            opacity: 0.9;
+        
+        .soundtrack-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-style: italic;
         }
 
-        .label-text {
-            color: var(--primary-color);
-            font-size: 0.8em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-            display: block;
-            text-align: left;
-        }
-
-        .ticket-data {
-            border-top: 1px solid #333;
-            margin-top: 10px;
-            padding-top: 20px;
-            text-align: left;
-            background: #222;
-            padding: 20px;
-            border-radius: 8px;
-        }
-        .ticket-data p { margin-bottom: 10px; font-size: 1em; color: #ccc; }
-        .ticket-data span { color: var(--primary-color); font-weight: bold; font-size: 1.1em; }
     </style>
 </head>
 <body>
@@ -189,14 +246,14 @@
         
         <div id="phase-1">
             <h1>Sistema de Seguridad</h1>
-            <p>Se ha detectado un paquete digital restringido. Proceda a la verificación de identidad.</p>
-            <button class="btn-action" onclick="startGame()">Iniciar</button>
+            <p>Se ha detectado un paquete digital restringido. Para acceder al regalo, verifica tu identidad.</p>
+            <button class="btn-action" onclick="startGame()">Iniciar Protocolo</button>
         </div>
 
         <div id="phase-2" class="hidden">
             <h1>Protocolo 01</h1>
-            <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo, ¿de qué nombre hablamos?</p>
-            <input type="text" id="input-2" placeholder="Nombre...">
+            <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo... ¿de qué nombre estamos hablando?</p>
+            <input type="text" id="input-2" placeholder="Escribe el nombre..." autocomplete="off">
             <p id="error-2" class="error-message">Identidad no reconocida</p>
             <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Verificar</button>
         </div>
@@ -204,56 +261,63 @@
         <div id="phase-3" class="hidden">
             <h1>Protocolo 02</h1>
             <p>Es el origen de todo, el vacío absoluto antes de que la música empiece a contar. ¿Qué concepto da título a su reinicio?</p>
-            <input type="text" id="input-3" placeholder="Concepto...">
+            <input type="text" id="input-3" placeholder="El concepto es..." autocomplete="off">
             <p id="error-3" class="error-message">Dato erróneo</p>
             <button class="btn-action" onclick="validate(3, 'cero', 4)">Verificar</button>
         </div>
 
         <div id="phase-4" class="hidden">
             <h1>Protocolo 03</h1>
-            <p>En 2005, una llamada confundió a una madre que no sabía quién estaba al otro lado. ¿A quién buscaba esa llamada?</p>
-            <input type="text" id="input-4" placeholder="Nombre...">
+            <p>En 2005, una llamada confundió a una madre que no sabía quién estaba al otro lado. ¿Por quién preguntaban?</p>
+            <input type="text" id="input-4" placeholder="Nombre..." autocomplete="off">
             <p id="error-4" class="error-message">Fallo de conexión</p>
             <button class="btn-action" onclick="validate(4, 'jose', 5)">Verificar</button>
         </div>
 
         <div id="phase-5" class="hidden">
             <h1>Protocolo 04</h1>
-            <p>Donde la seda tuvo su mercado y el fuego purifica la primavera. ¿Hacia qué coordenadas nos dirigimos?</p>
-            <input type="text" id="input-5" placeholder="Destino...">
+            <p>Donde la seda tuvo su mercado y el fuego purifica la primavera. ¿Hacia qué ciudad nos dirigimos?</p>
+            <input type="text" id="input-5" placeholder="Ciudad..." autocomplete="off">
             <p id="error-5" class="error-message">Coordenadas incorrectas</p>
             <button class="btn-action" onclick="validate(5, 'valencia', 6)">Verificar</button>
         </div>
 
         <div id="phase-6" class="hidden">
             <h1>Protocolo Final</h1>
-            <p>El quinto pilar del año, el mes de las flores y los comuneros. ¿Cuándo es la cita?</p>
-            <input type="text" id="input-6" placeholder="Mes...">
+            <p>El quinto pilar del año, el mes de las flores. ¿Cuándo es la gran cita?</p>
+            <input type="text" id="input-6" placeholder="Mes..." autocomplete="off">
             <p id="error-6" class="error-message">Fecha no válida</p>
             <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Desbloquear Regalo</button>
         </div>
 
         <div id="phase-7" class="hidden">
-            <h1>Desbloqueo Completado</h1>
-            <p>Tu regalo ha sido procesado. Nos vemos en el Roig Arena.</p>
+            <h1>¡Regalo Desbloqueado!</h1>
+            <p style="margin-bottom: 20px;">Prepara las maletas y la voz.</p>
             
-            <div class="result-wrapper">
-                <div>
-                    <span class="label-text">🎵 PLAY PARA DESCUBRIR...</span>
-                    <div class="video-wrapper" id="video-container">
-                        </div>
-                </div>
-
-                <div class="spotify-album-wrapper">
-                    <iframe style="border-radius:12px" src="https://open.spotify.com/album/5EbbudIaKJzjUOJ7uB59P7" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-                </div>
-
-                <div class="ticket-data">
-                    <p>EVENTO: <span>DANI MARTÍN - 25 P*TOS AÑOS</span></p>
-                    <p>UBICACIÓN: <span>VALENCIA</span></p>
-                    <p>FECHA: <span>MAYO 2026</span></p>
+            <div class="ticket-wrapper">
+                <div class="ticket-header">CONFIRMACIÓN DE ACCESO</div>
+                <div class="ticket-title">DANI MARTÍN<br><span>25 P*TOS AÑOS</span></div>
+                
+                <div class="ticket-details">
+                    <div class="ticket-info-box">
+                        <span class="ticket-label">Ciudad</span>
+                        <span class="ticket-value">VALENCIA</span>
+                    </div>
+                    <div class="ticket-info-box">
+                        <span class="ticket-label">Lugar</span>
+                        <span class="ticket-value">ROIG ARENA</span>
+                    </div>
+                    <div class="ticket-info-box">
+                        <span class="ticket-label">Fecha</span>
+                        <span class="ticket-value">MAYO 2026</span>
+                    </div>
                 </div>
             </div>
+
+            <p class="soundtrack-label">Banda sonora del momento:</p>
+            <div class="mini-video-container" id="video-container">
+                </div>
+
         </div>
     </div>
 
@@ -271,34 +335,39 @@
         function validate(currentPhaseId, correctAnswer, nextPhaseId, isFinal = false) {
             const inputElement = document.getElementById('input-' + currentPhaseId);
             const errorElement = document.getElementById('error-' + currentPhaseId);
+            // Normalizamos la respuesta (quitamos tildes, mayúsculas y espacios extra)
             let userAnswer = inputElement.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
             if (userAnswer.includes(correctAnswer)) {
                 errorElement.style.display = 'none';
+                
                 if (isFinal) {
-                    // --- CONFIGURACIÓN DEL MOMENTO EXACTO ---
-                    const youtubeID = "g7r2j6_Tulc"; // ID extraído de tu enlace
-                    const segundosInicio = 117; // 1:57 = 117 segundos
-                    // ----------------------------------------
-
+                    // --- AQUÍ OCURRE LA MAGIA DEL VIDEO ---
+                    const youtubeID = "g7r2j6_Tulc"; // Zapatillas
+                    const segundosInicio = 117; // 1:57
+                    
                     const videoContainer = document.getElementById('video-container');
                     
-                    // Se inserta el iframe con autoplay y start time
-                    videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeID}?autoplay=1&start=${segundosInicio}&rel=0&controls=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+                    // Inyectamos el iframe. 
+                    // 'controls=0' para que se vea más limpio (sin barra de youtube abajo, si es posible)
+                    // 'showinfo=0' para ocultar titulos
+                    videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeID}?autoplay=1&start=${segundosInicio}&rel=0&controls=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                     
-                    launchConfetti();
+                    launchConfetti(); // Explosión de confeti
                     transition(currentPhaseId, nextPhaseId);
                     updateProgress(totalPhases);
                 } else {
+                    // Acierto normal
                     sfxSuccess.play().catch(() => {});
                     showSuccessMessage();
                     updateProgress(currentPhaseId);
-                    setTimeout(() => transition(currentPhaseId, nextPhaseId), 1200);
+                    setTimeout(() => transition(currentPhaseId, nextPhaseId), 1000); // Un poco más rápido entre fases
                 }
             } else {
+                // Error
                 sfxError.play().catch(() => {});
                 errorElement.style.display = 'block';
-                inputElement.classList.add('shake');
+                inputElement.classList.add('shake'); // Efecto de vibración
                 setTimeout(() => inputElement.classList.remove('shake'), 500);
             }
         }
@@ -306,17 +375,22 @@
         function showSuccessMessage() {
             const overlay = document.getElementById('success-overlay');
             overlay.classList.add('active');
-            setTimeout(() => overlay.classList.remove('active'), 1000);
+            setTimeout(() => overlay.classList.remove('active'), 800);
         }
 
         function transition(current, next) {
             const currentEl = document.getElementById('phase-' + current);
             const nextEl = document.getElementById('phase-' + next);
+            
+            // Animación de salida
             currentEl.classList.add('fade-out-up');
+            
             setTimeout(() => {
                 currentEl.classList.add('hidden');
                 nextEl.classList.remove('hidden');
-                nextEl.classList.add('fade-in-up');
+                nextEl.classList.add('fade-in-up'); // Animación de entrada
+                
+                // Poner el foco en el siguiente input automáticamente
                 const nextInput = document.getElementById('input-' + next);
                 if (nextInput) nextInput.focus();
             }, 500); 
@@ -327,14 +401,26 @@
             document.getElementById('progress').style.width = percentage + '%';
         }
 
+        // Confeti más espectacular
         function launchConfetti() {
-            var end = Date.now() + (4 * 1000);
-            var colors = ['#b71c1c', '#ffffff', '#ff5252'];
-            (function frame() {
-              confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
-              confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
-              if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            var random = function(min, max) { return Math.random() * (max - min) + min; };
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                // Lanzamos confeti desde dos puntos (izquierda y derecha)
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#b71c1c', '#ffffff'] }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#d4af37', '#b71c1c'] }));
+            }, 250);
         }
     </script>
 </body>
