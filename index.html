@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
+            /* PALETA CIELO DE MADRID */
             --primary-color: #ff7e67;
             --primary-gradient: linear-gradient(45deg, #ff7e67, #ff6b6b);
             --bg-gradient: linear-gradient(135deg, #fce38a 0%, #f38181 100%);
@@ -135,11 +136,10 @@
     <audio id="sfx-applause" src="https://assets.mixkit.co/active_storage/sfx/478/478-preview.mp3" preload="auto"></audio>
     <audio id="sfx-ding" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
     <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
-    
     <audio id="final-song" src="https://github.com/charlygus/Mpaz/raw/refs/heads/main/Dani%20Martin%20-%20Una%20Foto%20en%20Blanco%20y%20Negro%20(Directo%20en%20Madrid)%20%5Bg7r2j6_Tulc%5D.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
-        <h2>Correcto</h2>
+        <h2>¡Bravo! 👏</h2>
     </div>
 
     <div class="main-container">
@@ -241,21 +241,22 @@
 
             if (userAnswer.includes(correctAnswer)) {
                 errorElement.style.display = 'none';
-                // Borrar texto inmediatamente para evitar el delay visual
+                
+                // ARREGLO DELAY: Limpiar input justo al acertar
                 inputElement.value = '';
 
                 if (isFinal) {
                     launchConfetti(); 
                     
-                    // Suenan aplausos y canción simultáneamente sin mezclas raras
+                    // Suenan aplausos
                     sfxApplause.volume = 1.0;
                     sfxApplause.currentTime = 0;
                     sfxApplause.play().catch(() => {});
 
-                    // Reproducción directa de la canción (salto a 1:57)
+                    // CANCIÓN FINAL: Salto al 1:57 (117s) y volumen 1.0
                     finalSong.volume = 1.0;
                     finalSong.currentTime = 117; 
-                    finalSong.play().catch(error => { console.log("Error de audio:", error); });
+                    finalSong.play().catch(error => console.log("Error audio:", error));
 
                     transition(currentPhaseId, nextPhaseId);
                     updateProgress(totalPhases);
