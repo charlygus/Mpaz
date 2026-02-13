@@ -20,10 +20,9 @@
 
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f38181; /* Color de respaldo */
+            background-color: #f38181; 
             
-            /* --- FONDO MISTERIOSO CON TEXTO "¿Qué será?" --- */
-            /* Usamos un SVG generado directamente en CSS para repetir el texto */
+            /* PATRÓN DE FONDO CON TEXTO */
             background-image: 
                 url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-weight='bold' font-style='italic' font-size='14' fill='%23ffffff' fill-opacity='0.2' transform='rotate(-45 60 60)' text-anchor='middle' dominant-baseline='middle'%3E¿Qué será?%3C/text%3E%3C/svg%3E"),
                 var(--bg-gradient);
@@ -42,7 +41,6 @@
             background: var(--container-bg);
             padding: 45px;
             border-radius: 24px;
-            /* Sombra más marcada para que destaque sobre el patrón del fondo */
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2); 
             max-width: 600px;
             width: 100%;
@@ -272,7 +270,8 @@
 <body>
 
     <audio id="sfx-applause" src="https://assets.mixkit.co/active_storage/sfx/478/478-preview.mp3" preload="auto"></audio>
-    <audio id="sfx-ding" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio> <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
+    <audio id="sfx-ding" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
+    <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
         <h2>¡Bravo! 👏</h2>
@@ -289,26 +288,26 @@
 
         <div id="phase-2" class="hidden">
             <h1>Primera Pista</h1>
-            <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo... ¿de qué nombre estamos hablando?</p>
-            <input type="text" id="input-2" placeholder="Tu respuesta aquí..." autocomplete="off" onkeypress="checkEnter(event, 2, 'dani martin', 3)">
-            <p id="error-2" class="error-message">Mmm, prueba otra vez...</p>
-            <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Comprobar</button>
+            <p>En el garito no le dejaban entrar porque las llevaba puestas. ¿Qué llevaba en los pies?</p>
+            <input type="text" id="input-2" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 2, 'zapatillas', 3)">
+            <p id="error-2" class="error-message">Error. Pista: Es algo muy cómodo...</p>
+            <button class="btn-action" onclick="validate(2, 'zapatillas', 3)">Comprobar</button>
         </div>
 
         <div id="phase-3" class="hidden">
             <h1>Segunda Pista</h1>
-            <p>Es el origen de todo, el vacío absoluto antes de que la música empiece a contar. ¿Qué concepto da título a su reinicio?</p>
-            <input type="text" id="input-3" placeholder="El concepto es..." autocomplete="off" onkeypress="checkEnter(event, 3, 'cero', 4)">
-            <p id="error-3" class="error-message">Casi, pero no...</p>
-            <button class="btn-action" onclick="validate(3, 'cero', 4)">Comprobar</button>
+            <p>Tiene una canción sobre un niño que se niega a crecer y prefiere volar. ¿De qué personaje hablamos?</p>
+            <input type="text" id="input-3" placeholder="El personaje es..." autocomplete="off" onkeypress="checkEnter(event, 3, 'peter pan', 4)">
+            <p id="error-3" class="error-message">Error. Pista: Vive en Nunca Jamás...</p>
+            <button class="btn-action" onclick="validate(3, 'peter pan', 4)">Comprobar</button>
         </div>
 
         <div id="phase-4" class="hidden">
             <h1>Tercera Pista</h1>
-            <p>En 2005, una llamada confundió a una madre que no sabía quién estaba al otro lado. ¿Por quién preguntaban?</p>
-            <input type="text" id="input-4" placeholder="Nombre..." autocomplete="off" onkeypress="checkEnter(event, 4, 'jose', 5)">
-            <p id="error-4" class="error-message">Ese no es...</p>
-            <button class="btn-action" onclick="validate(4, 'jose', 5)">Comprobar</button>
+            <p>Antes de volar solo, lideraba una banda que no estaba muy cuerda. ¿Cómo se llamaban?</p>
+            <input type="text" id="input-4" placeholder="Nombre de la banda..." autocomplete="off" onkeypress="checkEnter(event, 4, 'canto del loco', 5)">
+            <p id="error-4" class="error-message">Error. Pista: ECDL</p>
+            <button class="btn-action" onclick="validate(4, 'canto del loco', 5)">Comprobar</button>
         </div>
 
         <div id="phase-5" class="hidden">
