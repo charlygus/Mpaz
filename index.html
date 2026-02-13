@@ -132,17 +132,16 @@
         .ticket-label { font-size: 0.75rem; color: #999; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 5px; }
         .ticket-value { font-size: 1.2rem; color: var(--heading-color); font-weight: 700; }
 
-        /* REPRODUCTOR VINILO (CON PORTADA) */
+        /* REPRODUCTOR VINILO (CON NUEVA PORTADA) */
         .vinyl-container { width: 100%; display: flex; align-items: center; justify-content: center; margin-top: 20px; position: relative; }
         .vinyl-record {
             width: 150px; height: 150px;
-            /* Portada de Dani Martín (Spotify CDN) */
-            background: url('https://i.scdn.co/image/ab67616d0000b273a048a305072e885bb607e350');
+            /* Nuevo enlace a la portada */
+            background: url('https://lastfm.freetls.fastly.net/i/u/770x0/8a9b7024731977062185254905511171.jpg#8a9b7024731977062185254905511171');
             background-size: cover; background-position: center;
             border-radius: 50%; 
             box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             border: 4px solid #1a1a1a; 
-            /* Círculo central del vinilo */
             position: relative;
             animation: spin 4s linear infinite; animation-play-state: paused;
         }
@@ -162,7 +161,6 @@
     <audio id="sfx-applause" src="https://assets.mixkit.co/active_storage/sfx/478/478-preview.mp3" preload="auto"></audio>
     <audio id="sfx-ding" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
     <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
-    
     <audio id="final-song" src="https://github.com/charlygus/Mpaz/raw/refs/heads/main/Dani%20Martin%20-%20Una%20Foto%20en%20Blanco%20y%20Negro%20(Directo%20en%20Madrid)%20%5Bg7r2j6_Tulc%5D.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
@@ -273,6 +271,9 @@
 
             if (userAnswer.includes(correctAnswer)) {
                 errorElement.style.display = 'none';
+                // ARREGLO DELAY 1: Borrar input inmediatamente al acertar
+                inputElement.value = '';
+
                 if (isFinal) {
                     launchConfetti(); 
                     
@@ -282,15 +283,16 @@
                     sfxApplause.play().catch(() => {});
 
                     // 2. PREPARAR LA CANCIÓN
-                    finalSong.currentTime = 117; // Empieza en 1:57
+                    // Ya debería estar pre-cargada en el minuto 1:57 por la transición anterior
                     finalSong.volume = 0.0;
                     
                     let playPromise = finalSong.play();
                     if (playPromise !== undefined) {
                         playPromise.then(_ => {
+                            // Cuando realmente empiece a sonar:
                             vinyl.classList.add('playing');
-                            // 3. CROSSFADE (MEZCLA DE AUDIO)
-                            setTimeout(() => { crossfadeAudio(); }, 2000);
+                            // 3. CROSSFADE (MEZCLA DE AUDIO) MÁS RÁPIDO
+                            setTimeout(() => { crossfadeAudio(); }, 1500);
                         })
                         .catch(error => { console.log("Error audio:", error); });
                     }
@@ -312,13 +314,13 @@
         function crossfadeAudio() {
             let interval = setInterval(function () {
                 // Baja aplausos
-                if (sfxApplause.volume > 0.1) sfxApplause.volume -= 0.05;
+                if (sfxApplause.volume > 0.1) sfxApplause.volume -= 0.1; // Baja más rápido
                 else sfxApplause.pause();
 
                 // Sube canción hasta 1.0 (Max)
-                if (finalSong.volume < 0.95) finalSong.volume += 0.05;
+                if (finalSong.volume < 0.9) finalSong.volume += 0.1; // Sube más rápido
                 else { finalSong.volume = 1.0; clearInterval(interval); }
-            }, 200);
+            }, 150); // Intervalo más corto para una mezcla más rápida
         }
 
         function showSuccessMessage() {
@@ -329,14 +331,21 @@
         function transition(current, next) {
             const currentEl = document.getElementById('phase-' + current);
             const nextEl = document.getElementById('phase-' + next);
+            
+            // ARREGLO DELAY 2 (Redundancia): Asegurar que el siguiente input está limpio
+            const nextInput = document.getElementById('input-' + next);
+            if (nextInput) { nextInput.value = ''; }
+
+            // ARREGLO BUFFERING: Si vamos a la última pregunta, pre-cargamos el audio
+            if (next === 7) {
+                finalSong.currentTime = 117; // Prepara el minuto 1:57
+                // Un pequeño play/pause forzado para obligar al navegador a buscar el punto
+                finalSong.play().then(() => finalSong.pause()).catch(() => {});
+            }
+
             currentEl.classList.add('fade-out-up');
             setTimeout(() => {
                 currentEl.classList.add('hidden'); 
-                
-                // Arreglo del Delay: Limpiamos el siguiente input
-                const nextInput = document.getElementById('input-' + next);
-                if (nextInput) { nextInput.value = ''; }
-
                 nextEl.classList.remove('hidden'); nextEl.classList.add('fade-in-up'); 
                 if (nextInput) nextInput.focus();
             }, 500); 
