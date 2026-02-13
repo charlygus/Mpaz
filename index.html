@@ -132,15 +132,26 @@
         .ticket-label { font-size: 0.75rem; color: #999; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 5px; }
         .ticket-value { font-size: 1.2rem; color: var(--heading-color); font-weight: 700; }
 
-        /* REPRODUCTOR VINILO */
+        /* REPRODUCTOR VINILO (CON PORTADA) */
         .vinyl-container { width: 100%; display: flex; align-items: center; justify-content: center; margin-top: 20px; position: relative; }
         .vinyl-record {
             width: 150px; height: 150px;
-            /* Si tienes una URL de la portada del disco, cámbiala aquí */
-            background: url('https://cdn-icons-png.flaticon.com/512/1384/1384063.png');
-            background-size: cover; border-radius: 50%; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            /* Portada de Dani Martín (Spotify CDN) */
+            background: url('https://i.scdn.co/image/ab67616d0000b273a048a305072e885bb607e350');
+            background-size: cover; background-position: center;
+            border-radius: 50%; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 4px solid #1a1a1a; 
+            /* Círculo central del vinilo */
+            position: relative;
             animation: spin 4s linear infinite; animation-play-state: paused;
         }
+        /* Agujero del vinilo */
+        .vinyl-record::after {
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 20px; height: 20px; background: #fff; border-radius: 50%; border: 1px solid #ddd;
+        }
+
         .vinyl-record.playing { animation-play-state: running; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .soundtrack-label { font-size: 0.9rem; color: var(--primary-color); margin-top: 15px; font-weight: 600; display: block; }
@@ -152,7 +163,7 @@
     <audio id="sfx-ding" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
     <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
     
-    <audio id="final-song" src="https://raw.githubusercontent.com/charlygus/Mpaz/main/Dani%20Martin%20-%20Una%20Foto%20en%20Blanco%20y%20Negro%20(Directo%20en%20Madrid)%20%5Bg7r2j6_Tulc%5D.mp3" preload="auto"></audio>
+    <audio id="final-song" src="https://github.com/charlygus/Mpaz/raw/refs/heads/main/Dani%20Martin%20-%20Una%20Foto%20en%20Blanco%20y%20Negro%20(Directo%20en%20Madrid)%20%5Bg7r2j6_Tulc%5D.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
         <h2>¡Bravo! 👏</h2>
@@ -270,23 +281,18 @@
                     sfxApplause.currentTime = 0;
                     sfxApplause.play().catch(() => {});
 
-                    // 2. PREPARAR LA CANCIÓN (MUTEADA AL PRINCIPIO)
-                    // IMPORTANTE: Aquí se define el minuto. 117 segundos = 1:57
-                    finalSong.currentTime = 117; 
+                    // 2. PREPARAR LA CANCIÓN
+                    finalSong.currentTime = 117; // Empieza en 1:57
                     finalSong.volume = 0.0;
                     
-                    // Intentamos reproducir. Algunos navegadores requieren interacción previa (ya la tenemos con el click)
                     let playPromise = finalSong.play();
                     if (playPromise !== undefined) {
                         playPromise.then(_ => {
-                            // Reproducción iniciada
                             vinyl.classList.add('playing');
                             // 3. CROSSFADE (MEZCLA DE AUDIO)
                             setTimeout(() => { crossfadeAudio(); }, 2000);
                         })
-                        .catch(error => {
-                            console.log("Error al reproducir audio:", error);
-                        });
+                        .catch(error => { console.log("Error audio:", error); });
                     }
 
                     transition(currentPhaseId, nextPhaseId);
@@ -305,12 +311,12 @@
 
         function crossfadeAudio() {
             let interval = setInterval(function () {
-                // Bajar Aplausos
+                // Baja aplausos
                 if (sfxApplause.volume > 0.1) sfxApplause.volume -= 0.05;
                 else sfxApplause.pause();
 
-                // Subir Canción
-                if (finalSong.volume < 0.9) finalSong.volume += 0.05;
+                // Sube canción hasta 1.0 (Max)
+                if (finalSong.volume < 0.95) finalSong.volume += 0.05;
                 else { finalSong.volume = 1.0; clearInterval(interval); }
             }, 200);
         }
@@ -325,8 +331,14 @@
             const nextEl = document.getElementById('phase-' + next);
             currentEl.classList.add('fade-out-up');
             setTimeout(() => {
-                currentEl.classList.add('hidden'); nextEl.classList.remove('hidden'); nextEl.classList.add('fade-in-up'); 
-                const nextInput = document.getElementById('input-' + next); if (nextInput) nextInput.focus();
+                currentEl.classList.add('hidden'); 
+                
+                // Arreglo del Delay: Limpiamos el siguiente input
+                const nextInput = document.getElementById('input-' + next);
+                if (nextInput) { nextInput.value = ''; }
+
+                nextEl.classList.remove('hidden'); nextEl.classList.add('fade-in-up'); 
+                if (nextInput) nextInput.focus();
             }, 500); 
         }
 
