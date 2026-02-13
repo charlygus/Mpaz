@@ -7,7 +7,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            /* PALETA "CIELO DE MADRID" */
             --primary-color: #ff7e67;
             --primary-gradient: linear-gradient(45deg, #ff7e67, #ff6b6b);
             --bg-gradient: linear-gradient(135deg, #fce38a 0%, #f38181 100%);
@@ -21,7 +20,6 @@
         body {
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: #f38181; 
-            /* Patrón de fondo con texto */
             background-image: 
                 url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-weight='bold' font-style='italic' font-size='14' fill='%23ffffff' fill-opacity='0.2' transform='rotate(-45 60 60)' text-anchor='middle' dominant-baseline='middle'%3E¿Qué será?%3C/text%3E%3C/svg%3E"),
                 var(--bg-gradient);
@@ -111,7 +109,6 @@
         #success-overlay h2 { font-weight: 800; font-size: 3rem; text-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
-        /* TICKET */
         .ticket-wrapper {
             background: #fff; border: 2px solid var(--accent-gold); border-left: 8px solid var(--accent-gold);
             padding: 30px; border-radius: 16px; margin-bottom: 30px; position: relative;
@@ -131,29 +128,6 @@
         .ticket-info-box { text-align: left; }
         .ticket-label { font-size: 0.75rem; color: #999; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 5px; }
         .ticket-value { font-size: 1.2rem; color: var(--heading-color); font-weight: 700; }
-
-        /* REPRODUCTOR VINILO (CON NUEVA PORTADA) */
-        .vinyl-container { width: 100%; display: flex; align-items: center; justify-content: center; margin-top: 20px; position: relative; }
-        .vinyl-record {
-            width: 150px; height: 150px;
-            /* Nuevo enlace a la portada */
-            background: url('https://lastfm.freetls.fastly.net/i/u/770x0/8a9b7024731977062185254905511171.jpg#8a9b7024731977062185254905511171');
-            background-size: cover; background-position: center;
-            border-radius: 50%; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            border: 4px solid #1a1a1a; 
-            position: relative;
-            animation: spin 4s linear infinite; animation-play-state: paused;
-        }
-        /* Agujero del vinilo */
-        .vinyl-record::after {
-            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 20px; height: 20px; background: #fff; border-radius: 50%; border: 1px solid #ddd;
-        }
-
-        .vinyl-record.playing { animation-play-state: running; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        .soundtrack-label { font-size: 0.9rem; color: var(--primary-color); margin-top: 15px; font-weight: 600; display: block; }
     </style>
 </head>
 <body>
@@ -161,17 +135,18 @@
     <audio id="sfx-applause" src="https://assets.mixkit.co/active_storage/sfx/478/478-preview.mp3" preload="auto"></audio>
     <audio id="sfx-ding" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
     <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
+    
     <audio id="final-song" src="https://github.com/charlygus/Mpaz/raw/refs/heads/main/Dani%20Martin%20-%20Una%20Foto%20en%20Blanco%20y%20Negro%20(Directo%20en%20Madrid)%20%5Bg7r2j6_Tulc%5D.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
-        <h2>¡Bravo! 👏</h2>
+        <h2>Correcto</h2>
     </div>
 
     <div class="main-container">
         <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
         <div id="phase-1">
-            <h1>¡Hola! Tengo una sorpresa para ti...</h1>
+            <h1>Hola. Tengo una sorpresa para ti...</h1>
             <p>Pero para conseguirla, vamos a ver si conoces las claves. ¿Jugamos?</p>
             <button class="btn-action" onclick="startGame()">Empezar el Juego</button>
         </div>
@@ -187,7 +162,7 @@
         <div id="phase-3" class="hidden">
             <h1>Segunda Pista</h1>
             <p>Tiene una canción sobre un niño que se niega a crecer y prefiere volar. ¿De qué personaje hablamos?</p>
-            <input type="text" id="input-3" placeholder="El personaje es..." autocomplete="off" onkeypress="checkEnter(event, 3, 'peter pan', 4)">
+            <input type="text" id="input-3" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 3, 'peter pan', 4)">
             <p id="error-3" class="error-message">Error. Pista: Vive en Nunca Jamás...</p>
             <button class="btn-action" onclick="validate(3, 'peter pan', 4)">Comprobar</button>
         </div>
@@ -195,7 +170,7 @@
         <div id="phase-4" class="hidden">
             <h1>Tercera Pista</h1>
             <p>Antes de volar solo, lideraba una banda que no estaba muy cuerda. ¿Cómo se llamaban?</p>
-            <input type="text" id="input-4" placeholder="Nombre de la banda..." autocomplete="off" onkeypress="checkEnter(event, 4, 'canto del loco', 5)">
+            <input type="text" id="input-4" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 4, 'canto del loco', 5)">
             <p id="error-4" class="error-message">Error. Pista: ECDL</p>
             <button class="btn-action" onclick="validate(4, 'canto del loco', 5)">Comprobar</button>
         </div>
@@ -203,7 +178,7 @@
         <div id="phase-5" class="hidden">
             <h1>Cuarta Pista</h1>
             <p>Tierra de flores, de luz y de... arroz. Donde se queman los monumentos en marzo y se vive la vida a todo color.</p>
-            <input type="text" id="input-5" placeholder="Ciudad..." autocomplete="off" onkeypress="checkEnter(event, 5, 'valencia', 6)">
+            <input type="text" id="input-5" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 5, 'valencia', 6)">
             <p id="error-5" class="error-message">Revisa el mapa...</p>
             <button class="btn-action" onclick="validate(5, 'valencia', 6)">Comprobar</button>
         </div>
@@ -211,17 +186,17 @@
         <div id="phase-6" class="hidden">
             <h1>Última Pregunta</h1>
             <p>El quinto pilar del año, el mes de las flores. ¿Cuándo es la gran cita?</p>
-            <input type="text" id="input-6" placeholder="Mes..." autocomplete="off" onkeypress="checkEnter(event, 6, 'mayo', 7, true)">
+            <input type="text" id="input-6" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 6, 'mayo', 7, true)">
             <p id="error-6" class="error-message">Fecha incorrecta...</p>
-            <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Ver mi Regalo 🎁</button>
+            <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Ver mi Regalo</button>
         </div>
 
         <div id="phase-7" class="hidden">
-            <h1>¡Lo has conseguido! 🎉</h1>
+            <h1>Lo has conseguido</h1>
             <p style="margin-bottom: 25px;">Prepara la voz, porque nos vamos de concierto.</p>
             
             <div class="ticket-wrapper">
-                <div class="ticket-header">✨ TU ENTRADA ESPECIAL ✨</div>
+                <div class="ticket-header">TU ENTRADA ESPECIAL</div>
                 <div class="ticket-title">DANI MARTÍN<br><span>25 P*TOS AÑOS</span></div>
                 
                 <div class="ticket-details">
@@ -239,11 +214,7 @@
                     </div>
                 </div>
             </div>
-
-            <div class="vinyl-container">
-                <div class="vinyl-record" id="vinyl"></div>
-            </div>
-            <span class="soundtrack-label">🎵 Escucha cómo suena...</span>
+            <p>Escucha cómo suena...</p>
         </div>
     </div>
 
@@ -253,7 +224,6 @@
         const sfxDing = document.getElementById("sfx-ding");
         const sfxError = document.getElementById("sfx-error");
         const finalSong = document.getElementById("final-song");
-        const vinyl = document.getElementById("vinyl");
 
         function startGame() {
             sfxDing.volume = 0.5; sfxDing.play().catch(() => {});
@@ -271,31 +241,21 @@
 
             if (userAnswer.includes(correctAnswer)) {
                 errorElement.style.display = 'none';
-                // ARREGLO DELAY 1: Borrar input inmediatamente al acertar
+                // Borrar texto inmediatamente para evitar el delay visual
                 inputElement.value = '';
 
                 if (isFinal) {
                     launchConfetti(); 
                     
-                    // 1. SONAR APLAUSOS
+                    // Suenan aplausos y canción simultáneamente sin mezclas raras
                     sfxApplause.volume = 1.0;
                     sfxApplause.currentTime = 0;
                     sfxApplause.play().catch(() => {});
 
-                    // 2. PREPARAR LA CANCIÓN
-                    // Ya debería estar pre-cargada en el minuto 1:57 por la transición anterior
-                    finalSong.volume = 0.0;
-                    
-                    let playPromise = finalSong.play();
-                    if (playPromise !== undefined) {
-                        playPromise.then(_ => {
-                            // Cuando realmente empiece a sonar:
-                            vinyl.classList.add('playing');
-                            // 3. CROSSFADE (MEZCLA DE AUDIO) MÁS RÁPIDO
-                            setTimeout(() => { crossfadeAudio(); }, 1500);
-                        })
-                        .catch(error => { console.log("Error audio:", error); });
-                    }
+                    // Reproducción directa de la canción (salto a 1:57)
+                    finalSong.volume = 1.0;
+                    finalSong.currentTime = 117; 
+                    finalSong.play().catch(error => { console.log("Error de audio:", error); });
 
                     transition(currentPhaseId, nextPhaseId);
                     updateProgress(totalPhases);
@@ -311,18 +271,6 @@
             }
         }
 
-        function crossfadeAudio() {
-            let interval = setInterval(function () {
-                // Baja aplausos
-                if (sfxApplause.volume > 0.1) sfxApplause.volume -= 0.1; // Baja más rápido
-                else sfxApplause.pause();
-
-                // Sube canción hasta 1.0 (Max)
-                if (finalSong.volume < 0.9) finalSong.volume += 0.1; // Sube más rápido
-                else { finalSong.volume = 1.0; clearInterval(interval); }
-            }, 150); // Intervalo más corto para una mezcla más rápida
-        }
-
         function showSuccessMessage() {
             const overlay = document.getElementById('success-overlay');
             overlay.classList.add('active'); setTimeout(() => overlay.classList.remove('active'), 1000);
@@ -332,16 +280,8 @@
             const currentEl = document.getElementById('phase-' + current);
             const nextEl = document.getElementById('phase-' + next);
             
-            // ARREGLO DELAY 2 (Redundancia): Asegurar que el siguiente input está limpio
             const nextInput = document.getElementById('input-' + next);
             if (nextInput) { nextInput.value = ''; }
-
-            // ARREGLO BUFFERING: Si vamos a la última pregunta, pre-cargamos el audio
-            if (next === 7) {
-                finalSong.currentTime = 117; // Prepara el minuto 1:57
-                // Un pequeño play/pause forzado para obligar al navegador a buscar el punto
-                finalSong.play().then(() => finalSong.pause()).catch(() => {});
-            }
 
             currentEl.classList.add('fade-out-up');
             setTimeout(() => {
