@@ -3,20 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protocolo de Acceso: Restringido</title>
+    <title>Una Sorpresa para Ti</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            --primary-color: #b71c1c; /* Rojo Dani Martín */
-            --secondary-color: #1a1a1a;
-            --bg-color: #0d0d0d;
-            --text-color: #e0e0e0;
-            --gold-accent: #d4af37; /* Toque dorado para el ticket */
+            /* NUEVA PALETA "CIELO DE MADRID" */
+            --primary-color: #ff7e67; /* Coral cálido */
+            --primary-gradient: linear-gradient(45deg, #ff7e67, #ff6b6b);
+            --bg-gradient: linear-gradient(135deg, #fce38a 0%, #f38181 100%); /* Atardecer pastel */
+            --container-bg: #ffffff;
+            --text-color: #666666;
+            --heading-color: #333333;
+            --accent-gold: #d4af37;
+            --success-color: #4fd69c;
+            --error-color: #ff6b6b;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient); /* Fondo degradado */
             color: var(--text-color);
             display: flex;
             justify-content: center;
@@ -28,78 +33,94 @@
         }
 
         .main-container {
-            background: #1a1a1a;
-            padding: 40px;
-            border-radius: 12px;
-            border: 1px solid #333;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            background: var(--container-bg);
+            padding: 45px;
+            border-radius: 24px; /* Esquinas mucho más redondeadas */
+            /* Sombra suave y difusa de color */
+            box-shadow: 0 20px 40px rgba(243, 129, 129, 0.3); 
+            border: none;
             max-width: 600px;
             width: 100%;
             position: relative;
             overflow: hidden;
-            text-align: center; /* Centramos todo por defecto para que quede mejor */
+            text-align: center;
         }
 
         .progress-container {
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background-color: #333;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background-color: #f0f0f0;
         }
         .progress-bar {
             height: 100%;
-            background-color: var(--primary-color);
+            background: var(--primary-gradient); /* Barra con degradado */
             width: 0%;
             transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 3px 3px 0;
         }
 
-        h1 { color: white; margin-bottom: 25px; font-weight: 300; letter-spacing: 2px; text-transform: uppercase; font-size: 1.8rem; }
-        p { font-size: 1.1em; line-height: 1.6; margin-bottom: 35px; color: #bbb; }
+        h1 { 
+            color: var(--heading-color); 
+            margin-bottom: 25px; 
+            font-weight: 700; 
+            letter-spacing: 0.5px; 
+            text-transform: none; /* Quitamos mayúsculas agresivas */
+            font-size: 2rem; 
+        }
+        p { font-size: 1.15em; line-height: 1.7; margin-bottom: 35px; color: var(--text-color); }
         
         input[type="text"] {
-            background: #252525;
-            padding: 15px;
+            background: #f9f9f9;
+            padding: 18px;
             width: 80%;
-            border: 1px solid #444;
-            border-radius: 6px;
+            border: 2px solid #eeeeee;
+            border-radius: 12px; /* Inputs redonditos */
             font-size: 18px;
-            color: white;
+            color: var(--heading-color);
             margin-bottom: 25px;
             outline: none;
             transition: all 0.3s;
             text-align: center;
         }
 
-        input[type="text"]:focus { border-color: var(--primary-color); background: #2a2a2a; box-shadow: 0 0 10px rgba(183, 28, 28, 0.3); }
-
-        .btn-action {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 14px 40px;
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(183, 28, 28, 0.4);
+        input[type="text"]:focus { 
+            border-color: var(--primary-color); 
+            background: #fff; 
+            box-shadow: 0 5px 15px rgba(255, 126, 103, 0.2); 
         }
 
-        .btn-action:hover { background-color: #d32f2f; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(183, 28, 28, 0.6); }
+        .btn-action {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 16px 45px;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            border-radius: 50px; /* Botones estilo píldora */
+            transition: all 0.3s;
+            text-transform: none;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-action:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 15px 25px rgba(255, 107, 107, 0.4); 
+        }
 
         .hidden { display: none !important; }
         
         .error-message {
-            color: #ff5252;
-            font-size: 0.9em;
+            color: var(--error-color);
+            font-size: 0.95em;
             margin-top: -15px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             display: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        .shake { animation: shake 0.5s; border-color: #ff5252 !important; }
+        .shake { animation: shake 0.5s; border-color: var(--error-color) !important; }
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
@@ -109,13 +130,14 @@
         .fade-out-up { animation: fadeOutUp 0.6s forwards; }
         .fade-in-up { animation: fadeInUp 0.6s forwards; }
         
-        @keyframes fadeOutUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeOutUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-30px); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         #success-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(183, 28, 28, 0.98);
+            /* Degradado de éxito bonito */
+            background: linear-gradient(135deg, rgba(255, 126, 103, 0.95), rgba(255, 107, 107, 0.95));
             color: white;
             display: flex;
             justify-content: center;
@@ -124,65 +146,78 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.4s;
-            font-weight: bold;
-            font-size: 2rem;
-            letter-spacing: 5px;
+        }
+        #success-overlay h2 {
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
-        /* --- ESTILOS DE LA ENTRADA (TICKET) --- */
+        /* --- ESTILOS DE LA ENTRADA (TICKET REIMAGINADO) --- */
         .ticket-wrapper {
-            background: linear-gradient(135deg, #222 0%, #1a1a1a 100%);
-            border: 1px solid #444;
-            border-left: 5px solid var(--primary-color);
-            padding: 25px;
-            border-radius: 8px;
-            margin-bottom: 25px;
+            background: #fff;
+            /* Borde dorado elegante */
+            border: 2px solid var(--accent-gold);
+            border-left: 8px solid var(--accent-gold);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
             position: relative;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: left; /* Alineado a la izquierda para parecer una entrada real */
+            /* Sombra dorada suave */
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15);
+            text-align: left;
         }
         
-        /* Efecto de "cortes" del ticket */
+        /* Círculos decorativos del ticket (ahora blancos) */
         .ticket-wrapper::before, .ticket-wrapper::after {
             content: '';
             position: absolute;
-            right: -10px;
-            width: 20px;
-            height: 20px;
-            background-color: var(--bg-color); /* Mismo color que el fondo de la página */
+            right: -12px;
+            width: 24px;
+            height: 24px;
+            background-color: var(--container-bg); /* Del mismo color que el contenedor */
+            border: 2px solid var(--accent-gold); /* Borde para que se note */
             border-radius: 50%;
         }
-        .ticket-wrapper::before { top: 40%; }
-        .ticket-wrapper::after { top: 40%; } /* Ajuste visual */
+        .ticket-wrapper::before { top: 35%; border-top-color: transparent; border-right-color: transparent; transform: rotate(45deg); }
+        .ticket-wrapper::after { top: 35%; } /* Simplificado para este estilo */
 
         .ticket-header {
-            font-size: 0.8rem;
-            color: #888;
-            letter-spacing: 2px;
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 10px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
         }
 
         .ticket-title {
-            font-size: 1.6rem;
-            color: white;
-            font-weight: bold;
-            margin: 10px 0;
+            font-size: 2rem;
+            color: var(--heading-color);
+            font-weight: 800;
+            margin: 15px 0;
             text-transform: uppercase;
-            line-height: 1.2;
+            line-height: 1.1;
         }
         
         .ticket-title span {
             color: var(--primary-color);
+            background: -webkit-linear-gradient(45deg, var(--primary-color), #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .ticket-details {
             display: flex;
             justify-content: space-between;
-            margin-top: 15px;
+            margin-top: 25px;
+            background: #fcfcfc;
+            padding: 15px;
+            border-radius: 12px;
         }
         
         .ticket-info-box {
@@ -190,31 +225,33 @@
         }
         
         .ticket-label {
-            font-size: 0.7rem;
-            color: #888;
+            font-size: 0.75rem;
+            color: #999;
             text-transform: uppercase;
             display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
         
         .ticket-value {
-            font-size: 1.1rem;
-            color: white;
-            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--heading-color);
+            font-weight: 700;
         }
 
         /* --- ESTILOS DEL VIDEO PEQUEÑO --- */
         .mini-video-container {
             width: 100%;
-            max-width: 320px; /* Tamaño máximo limitado */
-            margin: 0 auto;   /* Centrado */
-            border-radius: 8px;
+            max-width: 340px; 
+            margin: 0 auto;   
+            border-radius: 16px; /* Más redondeado */
             overflow: hidden;
-            border: 1px solid #333;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            border: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); /* Sombra más sutil */
             position: relative;
-            padding-bottom: 180px; /* Altura fija para el contenedor pequeño (16:9 aprox de 320px) */
+            padding-bottom: 191px; /* Ajuste de altura */
             height: 0;
-            background: black;
+            background: #eee; /* Fondo claro mientras carga */
         }
 
         .mini-video-container iframe {
@@ -223,11 +260,11 @@
         }
         
         .soundtrack-label {
-            font-size: 0.85rem;
-            color: #666;
-            margin-top: 5px;
-            margin-bottom: 10px;
-            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-top: 10px;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
 
     </style>
@@ -238,64 +275,64 @@
     <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
-        <h2>ACCESO CONCEDIDO</h2>
+        <h2>¡Correcto! ✨</h2>
     </div>
 
     <div class="main-container">
         <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
         <div id="phase-1">
-            <h1>Sistema de Seguridad</h1>
-            <p>Se ha detectado un paquete digital restringido. Para acceder al regalo, verifica tu identidad.</p>
-            <button class="btn-action" onclick="startGame()">Iniciar Protocolo</button>
+            <h1>¡Hola! Tengo una sorpresa para ti...</h1>
+            <p>Pero para conseguirla, vamos a ver si conoces las claves. ¿Jugamos?</p>
+            <button class="btn-action" onclick="startGame()">Empezar el Juego</button>
         </div>
 
         <div id="phase-2" class="hidden">
-            <h1>Protocolo 01</h1>
+            <h1>Primera Pista</h1>
             <p>Si un coro se volviera loco y su líder decidiera caminar solo para encontrarse a sí mismo... ¿de qué nombre estamos hablando?</p>
-            <input type="text" id="input-2" placeholder="Escribe el nombre..." autocomplete="off">
-            <p id="error-2" class="error-message">Identidad no reconocida</p>
-            <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Verificar</button>
+            <input type="text" id="input-2" placeholder="Tu respuesta aquí..." autocomplete="off">
+            <p id="error-2" class="error-message">Mmm, prueba otra vez...</p>
+            <button class="btn-action" onclick="validate(2, 'dani martin', 3)">Comprobar</button>
         </div>
 
         <div id="phase-3" class="hidden">
-            <h1>Protocolo 02</h1>
+            <h1>Segunda Pista</h1>
             <p>Es el origen de todo, el vacío absoluto antes de que la música empiece a contar. ¿Qué concepto da título a su reinicio?</p>
             <input type="text" id="input-3" placeholder="El concepto es..." autocomplete="off">
-            <p id="error-3" class="error-message">Dato erróneo</p>
-            <button class="btn-action" onclick="validate(3, 'cero', 4)">Verificar</button>
+            <p id="error-3" class="error-message">Casi, pero no...</p>
+            <button class="btn-action" onclick="validate(3, 'cero', 4)">Comprobar</button>
         </div>
 
         <div id="phase-4" class="hidden">
-            <h1>Protocolo 03</h1>
+            <h1>Tercera Pista</h1>
             <p>En 2005, una llamada confundió a una madre que no sabía quién estaba al otro lado. ¿Por quién preguntaban?</p>
             <input type="text" id="input-4" placeholder="Nombre..." autocomplete="off">
-            <p id="error-4" class="error-message">Fallo de conexión</p>
-            <button class="btn-action" onclick="validate(4, 'jose', 5)">Verificar</button>
+            <p id="error-4" class="error-message">Ese no es...</p>
+            <button class="btn-action" onclick="validate(4, 'jose', 5)">Comprobar</button>
         </div>
 
         <div id="phase-5" class="hidden">
-            <h1>Protocolo 04</h1>
+            <h1>Cuarta Pista</h1>
             <p>Donde la seda tuvo su mercado y el fuego purifica la primavera. ¿Hacia qué ciudad nos dirigimos?</p>
             <input type="text" id="input-5" placeholder="Ciudad..." autocomplete="off">
-            <p id="error-5" class="error-message">Coordenadas incorrectas</p>
-            <button class="btn-action" onclick="validate(5, 'valencia', 6)">Verificar</button>
+            <p id="error-5" class="error-message">Revisa el mapa...</p>
+            <button class="btn-action" onclick="validate(5, 'valencia', 6)">Comprobar</button>
         </div>
 
         <div id="phase-6" class="hidden">
-            <h1>Protocolo Final</h1>
+            <h1>Última Pregunta</h1>
             <p>El quinto pilar del año, el mes de las flores. ¿Cuándo es la gran cita?</p>
             <input type="text" id="input-6" placeholder="Mes..." autocomplete="off">
-            <p id="error-6" class="error-message">Fecha no válida</p>
-            <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Desbloquear Regalo</button>
+            <p id="error-6" class="error-message">Fecha incorrecta...</p>
+            <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Ver mi Regalo 🎁</button>
         </div>
 
         <div id="phase-7" class="hidden">
-            <h1>¡Regalo Desbloqueado!</h1>
-            <p style="margin-bottom: 20px;">Prepara las maletas y la voz.</p>
+            <h1>¡Lo has conseguido! 🎉</h1>
+            <p style="margin-bottom: 25px;">Prepara la voz, porque nos vamos de concierto.</p>
             
             <div class="ticket-wrapper">
-                <div class="ticket-header">CONFIRMACIÓN DE ACCESO</div>
+                <div class="ticket-header">✨ TU ENTRADA ESPECIAL ✨</div>
                 <div class="ticket-title">DANI MARTÍN<br><span>25 P*TOS AÑOS</span></div>
                 
                 <div class="ticket-details">
@@ -314,7 +351,7 @@
                 </div>
             </div>
 
-            <p class="soundtrack-label">Banda sonora del momento:</p>
+            <p class="soundtrack-label">🎵 Banda sonora del momento (Espera al subidón...)</p>
             <div class="mini-video-container" id="video-container">
                 </div>
 
@@ -349,8 +386,6 @@
                     const videoContainer = document.getElementById('video-container');
                     
                     // Inyectamos el iframe. 
-                    // 'controls=0' para que se vea más limpio (sin barra de youtube abajo, si es posible)
-                    // 'showinfo=0' para ocultar titulos
                     videoContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${youtubeID}?autoplay=1&start=${segundosInicio}&rel=0&controls=1&modestbranding=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
                     
                     launchConfetti(); // Explosión de confeti
@@ -401,7 +436,7 @@
             document.getElementById('progress').style.width = percentage + '%';
         }
 
-        // Confeti más espectacular
+        // Confeti más espectacular con colores cálidos
         function launchConfetti() {
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
@@ -417,9 +452,9 @@
                 }
 
                 var particleCount = 50 * (timeLeft / duration);
-                // Lanzamos confeti desde dos puntos (izquierda y derecha)
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#b71c1c', '#ffffff'] }));
-                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#d4af37', '#b71c1c'] }));
+                // Lanzamos confeti con colores de la nueva paleta (coral, dorado, blanco)
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 }, colors: ['#ff7e67', '#ffffff', '#d4af37'] }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 }, colors: ['#ff6b6b', '#fce38a'] }));
             }, 250);
         }
     </script>
