@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>¿Qué será?</title>
     
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/charlygus/Mpaz/main/favicon.png">
@@ -11,7 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         :root {
-            /* PALETA CIELO DE MADRID */
             --primary-color: #ff7e67;
             --primary-gradient: linear-gradient(45deg, #ff7e67, #ff6b6b);
             --bg-gradient: linear-gradient(135deg, #fce38a 0%, #f38181 100%);
@@ -48,9 +49,10 @@
             width: 100%;
             position: relative;
             overflow: hidden;
-            text-align: left; /* Alineación a la izquierda para el nuevo estilo */
+            text-align: left;
             z-index: 10;
             box-sizing: border-box;
+            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .progress-container {
@@ -66,7 +68,6 @@
             border-radius: 0 3px 3px 0;
         }
 
-        /* TÍTULOS CON ESTILO DINÁMICO */
         h1 { 
             color: var(--heading-color); 
             margin-bottom: 25px; 
@@ -99,7 +100,6 @@
             border-radius: 6px;
         }
 
-        /* OPCIONES TIPO TEST */
         .options-container {
             display: flex;
             flex-direction: column;
@@ -144,18 +144,35 @@
             text-align: center;
         }
 
-        .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 107, 107, 0.4); }
-        
         .hidden { display: none !important; }
         .error-message { color: var(--error-color); font-size: 1em; margin-top: -10px; margin-bottom: 25px; display: none; font-weight: 700; }
         
+        /* OPCIÓN 3: ANIMACIONES POP */
+        .pop-out { animation: popOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .pop-in { animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
+        
+        @keyframes popOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(1.05); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
         .shake { animation: shake 0.5s; border-color: var(--error-color) !important; background: #fff5f5 !important; color: var(--error-color) !important; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
-        
-        .fade-out-up { animation: fadeOutUp 0.6s forwards; }
-        .fade-in-up { animation: fadeInUp 0.6s forwards; }
-        @keyframes fadeOutUp { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-30px); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* OPCIÓN 4: INDICADOR DE CARGA */
+        .loading-text {
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-top: 15px;
+            display: none;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         #success-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -165,8 +182,6 @@
         #success-overlay h2 { font-weight: 800; font-size: 4rem; text-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
-        /* TICKET FINAL */
-        #phase-7 { text-align: center; }
         .ticket-wrapper {
             background: #fff; border: 2px solid var(--accent-gold); border-left: 8px solid var(--accent-gold);
             padding: 35px; border-radius: 16px; margin-bottom: 30px; position: relative;
@@ -187,7 +202,6 @@
         .ticket-label { font-size: 0.75rem; color: #999; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 5px; }
         .ticket-value { font-size: 1.1rem; color: var(--heading-color); font-weight: 700; }
 
-        /* OPTIMIZACIÓN MÓVIL (REALME / IPHONE) */
         @media (max-width: 600px) {
             .main-container { padding: 40px 25px; }
             h1 { font-size: 2.1rem; }
@@ -206,7 +220,6 @@
     <audio id="sfx-applause" src="https://assets.mixkit.co/active_storage/sfx/478/478-preview.mp3" preload="auto"></audio>
     <audio id="sfx-ding" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3" preload="auto"></audio>
     <audio id="sfx-error" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
-    
     <audio id="final-song" src="https://github.com/charlygus/Mpaz/raw/refs/heads/main/Dani%20Martin%20-%20Una%20Foto%20en%20Blanco%20y%20Negro%20(Directo%20en%20Madrid)%20%5Bg7r2j6_Tulc%5D.mp3" preload="auto"></audio>
 
     <div id="success-overlay">
@@ -275,29 +288,19 @@
                 <button class="btn-option" onclick="validate(this, 6, true, 7, true)">Mayo</button>
             </div>
             <p id="error-6" class="error-message">Mmm... revisa el calendario.</p>
+            <div id="final-loading" class="loading-text">Preparando sorpresa...</div>
         </div>
 
         <div id="phase-7" class="hidden">
             <h1>¡SÍIIII! ¡LO HAS <span class="hl-accent">CONSEGUIDO!</span> 🎉</h1>
             <p style="margin-bottom: 25px;">Prepara la voz, porque te vas de concierto.</p>
-            
             <div class="ticket-wrapper">
                 <div class="ticket-header">DOS ENTRADAS ESPECIALES</div>
                 <div class="ticket-title">DANI MARTÍN<br><span>25 P*TOS AÑOS</span></div>
-                
                 <div class="ticket-details">
-                    <div class="ticket-info-box">
-                        <span class="ticket-label">Ciudad</span>
-                        <span class="ticket-value">VALENCIA</span>
-                    </div>
-                    <div class="ticket-info-box">
-                        <span class="ticket-label">Lugar</span>
-                        <span class="ticket-value">ROIG ARENA</span>
-                    </div>
-                    <div class="ticket-info-box">
-                        <span class="ticket-label">Fecha</span>
-                        <span class="ticket-value">8 DE MAYO DE 2026</span>
-                    </div>
+                    <div class="ticket-info-box"><span class="ticket-label">Ciudad</span><span class="ticket-value">VALENCIA</span></div>
+                    <div class="ticket-info-box"><span class="ticket-label">Lugar</span><span class="ticket-value">ROIG ARENA</span></div>
+                    <div class="ticket-info-box"><span class="ticket-label">Fecha</span><span class="ticket-value">8 DE MAYO DE 2026</span></div>
                 </div>
             </div>
         </div>
@@ -311,31 +314,35 @@
         const finalSong = document.getElementById("final-song");
 
         function startGame() {
+            [sfxApplause, sfxDing, sfxError, finalSong].forEach(a => {
+                a.play().then(() => { a.pause(); a.currentTime = 0; }).catch(() => {});
+            });
             sfxDing.volume = 0.5; sfxDing.play().catch(() => {});
             transition(1, 2); updateProgress(1);
         }
 
         function validate(btn, currentPhaseId, isCorrect, nextPhaseId, isFinal = false) {
             const errorElement = document.getElementById('error-' + currentPhaseId);
+            const loadingText = document.getElementById('final-loading');
 
             if (isCorrect) {
                 errorElement.style.display = 'none';
+
                 if (isFinal) {
-                    launchConfetti(); 
-                    sfxApplause.volume = 1.0;
-                    sfxApplause.currentTime = 0;
-                    sfxApplause.play().catch(() => {});
-
-                    finalSong.volume = 1.0;
-                    finalSong.currentTime = 117; 
-                    finalSong.play().catch(error => console.log("Error audio:", error));
-
-                    transition(currentPhaseId, nextPhaseId);
-                    updateProgress(totalPhases);
+                    // Opción 4: Comprobar si el audio está listo
+                    if (finalSong.readyState < 3) {
+                        loadingText.style.display = 'block';
+                        finalSong.addEventListener('canplaythrough', () => {
+                            loadingText.style.display = 'none';
+                            finishGame(currentPhaseId, nextPhaseId);
+                        }, { once: true });
+                    } else {
+                        finishGame(currentPhaseId, nextPhaseId);
+                    }
                 } else {
                     sfxDing.volume = 0.8; sfxDing.currentTime = 0; sfxDing.play().catch(() => {});
                     showSuccessMessage(); updateProgress(currentPhaseId);
-                    setTimeout(() => transition(currentPhaseId, nextPhaseId), 1200); 
+                    setTimeout(() => transition(currentPhaseId, nextPhaseId), 1000); 
                 }
             } else {
                 sfxError.currentTime = 0; sfxError.play().catch(() => {});
@@ -345,19 +352,39 @@
             }
         }
 
+        function finishGame(current, next) {
+            launchConfetti(); 
+            sfxApplause.volume = 1.0;
+            sfxApplause.play().catch(() => {});
+            finalSong.volume = 1.0;
+            finalSong.currentTime = 117; 
+            finalSong.play().catch(e => console.log("Audio final:", e));
+            transition(current, next);
+            updateProgress(totalPhases);
+        }
+
         function showSuccessMessage() {
             const overlay = document.getElementById('success-overlay');
-            overlay.classList.add('active'); setTimeout(() => overlay.classList.remove('active'), 1000);
+            overlay.classList.add('active'); setTimeout(() => overlay.classList.remove('active'), 900);
         }
 
         function transition(current, next) {
             const currentEl = document.getElementById('phase-' + current);
             const nextEl = document.getElementById('phase-' + next);
-            currentEl.classList.add('fade-out-up');
+            
+            // Animación de salida (Pop Out)
+            currentEl.classList.add('pop-out');
+            
             setTimeout(() => {
-                currentEl.classList.add('hidden'); 
-                nextEl.classList.remove('hidden'); nextEl.classList.add('fade-in-up'); 
-            }, 500); 
+                currentEl.classList.add('hidden');
+                currentEl.classList.remove('pop-out');
+                
+                nextEl.classList.remove('hidden');
+                nextEl.classList.add('pop-in');
+                
+                // Limpieza de clase tras la animación
+                setTimeout(() => nextEl.classList.remove('pop-in'), 600);
+            }, 350); // Tiempo coordinado para evitar el "congelado"
         }
 
         function updateProgress(phaseCompleted) {
@@ -368,7 +395,7 @@
         function launchConfetti() {
             var duration = 5 * 1000;
             var animationEnd = Date.now() + duration;
-            var defaults = { startVelocity: 45, spread: 360, ticks: 100, zIndex: 0 };
+            var defaults = { startVelocity: 45, spread: 360, ticks: 100, zIndex: 200 };
             var random = function(min, max) { return Math.random() * (max - min) + min; };
             var interval = setInterval(function() {
                 var timeLeft = animationEnd - Date.now();
