@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>¿Qué será?</title>
     
     <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/charlygus/Mpaz/main/favicon.png">
@@ -33,6 +33,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh; /* Optimización para navegadores móviles modernos */
             margin: 0;
             padding: 20px;
             overflow-x: hidden;
@@ -49,6 +50,7 @@
             overflow: hidden;
             text-align: center;
             z-index: 10;
+            box-sizing: border-box;
         }
 
         .progress-container {
@@ -79,6 +81,7 @@
             outline: none;
             transition: all 0.3s;
             text-align: center;
+            box-sizing: border-box;
         }
 
         input[type="text"]:focus { border-color: var(--primary-color); background: #fff; box-shadow: 0 5px 15px rgba(255, 126, 103, 0.2); }
@@ -133,6 +136,43 @@
         .ticket-info-box { text-align: left; }
         .ticket-label { font-size: 0.75rem; color: #999; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 5px; }
         .ticket-value { font-size: 1.2rem; color: var(--heading-color); font-weight: 700; }
+
+        /* OPTIMIZACIÓN ESTRICTA PARA SMARTPHONE (iPhone & Realme) */
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 35px 25px; /* Aprovecha más el ancho de la pantalla */
+            }
+            h1 {
+                font-size: 1.7rem; /* Texto más contenido para que no ocupe toda la pantalla */
+                margin-bottom: 20px;
+            }
+            p {
+                font-size: 1.05em;
+                margin-bottom: 25px;
+            }
+            input[type="text"] {
+                width: 100%;
+                padding: 16px;
+                font-size: 16px !important; /* Vital para evitar el auto-zoom en iPhone */
+            }
+            .btn-action {
+                width: 100%;
+                padding: 16px;
+            }
+            #success-overlay h2 {
+                font-size: 2.2rem;
+            }
+            .ticket-wrapper {
+                padding: 20px;
+            }
+            .ticket-title {
+                font-size: 1.5rem;
+            }
+            .ticket-details {
+                flex-direction: column; /* Coloca los datos de la entrada en vertical */
+                gap: 12px;
+            }
+        }
     </style>
 </head>
 <body>
