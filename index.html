@@ -41,14 +41,14 @@
 
         .main-container {
             background: var(--container-bg);
-            padding: 45px;
+            padding: 50px;
             border-radius: 24px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2); 
-            max-width: 600px;
+            max-width: 650px;
             width: 100%;
             position: relative;
             overflow: hidden;
-            text-align: center;
+            text-align: left; /* Alineación a la izquierda para el nuevo estilo */
             z-index: 10;
             box-sizing: border-box;
         }
@@ -66,55 +66,88 @@
             border-radius: 0 3px 3px 0;
         }
 
-        h1 { color: var(--heading-color); margin-bottom: 25px; font-weight: 600; font-size: 2.2rem; line-height: 1.2; }
-        p { font-size: 1.15em; line-height: 1.7; margin-bottom: 35px; color: var(--text-color); }
+        /* TÍTULOS CON ESTILO DINÁMICO */
+        h1 { 
+            color: var(--heading-color); 
+            margin-bottom: 25px; 
+            font-weight: 700; 
+            font-size: 2.8rem; 
+            line-height: 1.1;
+            letter-spacing: -1px;
+        }
         
-        /* Estilos para los botones del tipo test */
+        h1 .hl-accent {
+            display: block;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            font-size: 3.2rem;
+            margin-top: 5px;
+        }
+
+        p { 
+            font-size: 1.25em; 
+            line-height: 1.6; 
+            margin-bottom: 35px; 
+            color: var(--text-color); 
+        }
+
+        p .hl-accent {
+            color: var(--accent-gold);
+            font-weight: 700;
+            background: rgba(212, 175, 55, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+        }
+
+        /* OPCIONES TIPO TEST */
         .options-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 12px;
+            margin-bottom: 30px;
         }
 
         .btn-option {
             background: #f9f9f9;
             border: 2px solid #eeeeee;
-            padding: 18px;
-            border-radius: 12px;
-            font-size: 18px;
+            padding: 18px 25px;
+            border-radius: 14px;
+            font-size: 1.1rem;
             color: var(--heading-color);
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
             width: 100%;
             box-sizing: border-box;
             font-weight: 600;
-            text-align: center;
+            text-align: left;
             outline: none;
         }
 
         .btn-option:hover { 
             border-color: var(--primary-color); 
             background: #fff; 
-            box-shadow: 0 5px 15px rgba(255, 126, 103, 0.2); 
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(255, 126, 103, 0.15); 
         }
 
         .btn-action {
             background: var(--primary-gradient);
             color: white;
             border: none;
-            padding: 16px 45px;
-            font-size: 17px;
+            padding: 18px 50px;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             border-radius: 50px;
             transition: all 0.3s;
             box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+            text-align: center;
         }
 
         .btn-action:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(255, 107, 107, 0.4); }
+        
         .hidden { display: none !important; }
-        .error-message { color: var(--error-color); font-size: 0.95em; margin-top: -5px; margin-bottom: 25px; display: none; font-weight: 600; }
+        .error-message { color: var(--error-color); font-size: 1em; margin-top: -10px; margin-bottom: 25px; display: none; font-weight: 700; }
         
         .shake { animation: shake 0.5s; border-color: var(--error-color) !important; background: #fff5f5 !important; color: var(--error-color) !important; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
@@ -129,12 +162,14 @@
             background: linear-gradient(135deg, rgba(255, 126, 103, 0.95), rgba(255, 107, 107, 0.95));
             color: white; display: flex; justify-content: center; align-items: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.4s;
         }
-        #success-overlay h2 { font-weight: 800; font-size: 3rem; text-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        #success-overlay h2 { font-weight: 800; font-size: 4rem; text-shadow: 0 4px 15px rgba(0,0,0,0.2); }
         #success-overlay.active { opacity: 1; pointer-events: all; }
 
+        /* TICKET FINAL */
+        #phase-7 { text-align: center; }
         .ticket-wrapper {
             background: #fff; border: 2px solid var(--accent-gold); border-left: 8px solid var(--accent-gold);
-            padding: 30px; border-radius: 16px; margin-bottom: 30px; position: relative;
+            padding: 35px; border-radius: 16px; margin-bottom: 30px; position: relative;
             box-shadow: 0 15px 30px rgba(212, 175, 55, 0.15); text-align: left;
         }
         .ticket-wrapper::before, .ticket-wrapper::after {
@@ -145,74 +180,24 @@
         .ticket-wrapper::after { top: 35%; }
 
         .ticket-header { font-size: 0.9rem; color: var(--accent-gold); letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
-        .ticket-title { font-size: 2rem; color: var(--heading-color); font-weight: 800; margin: 15px 0; line-height: 1.1; }
+        .ticket-title { font-size: 2.2rem; color: var(--heading-color); font-weight: 800; margin: 15px 0; line-height: 1.1; }
         .ticket-title span { color: var(--primary-color); background: -webkit-linear-gradient(45deg, var(--primary-color), #ff6b6b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .ticket-details { display: flex; justify-content: space-between; margin-top: 25px; background: #fcfcfc; padding: 15px; border-radius: 12px; }
         .ticket-info-box { text-align: left; }
         .ticket-label { font-size: 0.75rem; color: #999; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 5px; }
-        .ticket-value { font-size: 1.2rem; color: var(--heading-color); font-weight: 700; }
+        .ticket-value { font-size: 1.1rem; color: var(--heading-color); font-weight: 700; }
 
-        /* OPTIMIZACIÓN MÓVIL - OPCIÓN 3: CONTRASTE DINÁMICO */
+        /* OPTIMIZACIÓN MÓVIL (REALME / IPHONE) */
         @media (max-width: 600px) {
-            .main-container {
-                padding: 40px 25px;
-                text-align: left; 
-            }
-            h1 {
-                font-size: 2.1rem;
-                line-height: 1.1;
-                margin-bottom: 20px;
-                letter-spacing: -0.5px;
-            }
-            h1 .hl-mobile {
-                display: block;
-                color: var(--primary-color);
-                font-size: 2.5rem;
-                font-weight: 800;
-                margin-top: 5px;
-                text-transform: uppercase;
-            }
-            p {
-                font-size: 1.15em;
-                line-height: 1.6;
-                margin-bottom: 30px;
-            }
-            p .hl-mobile {
-                color: var(--accent-gold);
-                font-weight: 700;
-                background: rgba(212, 175, 55, 0.1);
-                padding: 2px 6px;
-                border-radius: 4px;
-            }
-            .btn-option {
-                padding: 16px;
-                font-size: 17px;
-            }
-            .btn-action {
-                width: 100%;
-                padding: 16px;
-            }
-            #success-overlay h2 {
-                font-size: 2.2rem;
-            }
-            #phase-7 {
-                text-align: center;
-            }
-            #phase-7 h1 .hl-mobile {
-                display: inline; 
-                font-size: inherit;
-            }
-            .ticket-wrapper {
-                padding: 20px;
-                text-align: left;
-            }
-            .ticket-title {
-                font-size: 1.5rem;
-            }
-            .ticket-details {
-                flex-direction: column;
-                gap: 12px;
-            }
+            .main-container { padding: 40px 25px; }
+            h1 { font-size: 2.1rem; }
+            h1 .hl-accent { font-size: 2.5rem; }
+            p { font-size: 1.15em; }
+            .btn-option { padding: 16px; font-size: 1.05rem; }
+            .btn-action { width: 100%; padding: 18px; }
+            #success-overlay h2 { font-size: 2.5rem; }
+            .ticket-title { font-size: 1.6rem; }
+            .ticket-details { flex-direction: column; gap: 15px; }
         }
     </style>
 </head>
@@ -232,14 +217,14 @@
         <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
         <div id="phase-1">
-            <h1>¡HOLA! ¡TENGO UNA <span class="hl-mobile">SORPRESA</span> INCREÍBLE PARA TI! 🎁</h1>
-            <p>Pero para conseguirla, vamos a ver si conoces las <span class="hl-mobile">claves</span>. ¿Jugamos?</p>
+            <h1>¡HOLA! ¡TENGO UNA <span class="hl-accent">SORPRESA</span> INCREÍBLE PARA TI! 🎁</h1>
+            <p>Pero para conseguirla, vamos a ver si conoces las <span class="hl-accent">claves</span>. ¿Jugamos?</p>
             <button class="btn-action" onclick="startGame()">Empezar el Juego</button>
         </div>
 
         <div id="phase-2" class="hidden">
-            <h1>Primera <span class="hl-mobile">Pista</span></h1>
-            <p>En el garito no le dejaban entrar porque las llevaba puestas. ¿Qué llevaba en los <span class="hl-mobile">pies</span>?</p>
+            <h1>Primera <span class="hl-accent">Pista</span></h1>
+            <p>En el garito no le dejaban entrar porque las llevaba puestas. ¿Qué llevaba en los <span class="hl-accent">pies</span>?</p>
             <div class="options-container">
                 <button class="btn-option" onclick="validate(this, 2, false, 3)">Botas</button>
                 <button class="btn-option" onclick="validate(this, 2, false, 3)">Chanclas</button>
@@ -249,8 +234,8 @@
         </div>
 
         <div id="phase-3" class="hidden">
-            <h1>Segunda <span class="hl-mobile">Pista</span></h1>
-            <p>Tiene una canción sobre un niño que se niega a crecer y prefiere <span class="hl-mobile">volar</span>. ¿De qué personaje hablamos?</p>
+            <h1>Segunda <span class="hl-accent">Pista</span></h1>
+            <p>Tiene una canción sobre un niño que se niega a crecer y prefiere <span class="hl-accent">volar</span>. ¿De qué personaje hablamos?</p>
             <div class="options-container">
                 <button class="btn-option" onclick="validate(this, 3, false, 4)">El Principito</button>
                 <button class="btn-option" onclick="validate(this, 3, true, 4)">Peter Pan</button>
@@ -260,8 +245,8 @@
         </div>
 
         <div id="phase-4" class="hidden">
-            <h1>Tercera <span class="hl-mobile">Pista</span></h1>
-            <p>Antes de volar solo, lideraba una banda que no estaba muy <span class="hl-mobile">cuerda</span>. ¿Cómo se llamaban?</p>
+            <h1>Tercera <span class="hl-accent">Pista</span></h1>
+            <p>Antes de volar solo, lideraba una banda que no estaba muy <span class="hl-accent">cuerda</span>. ¿Cómo se llamaban?</p>
             <div class="options-container">
                 <button class="btn-option" onclick="validate(this, 4, false, 5)">Pereza</button>
                 <button class="btn-option" onclick="validate(this, 4, false, 5)">Los Piratas</button>
@@ -271,8 +256,8 @@
         </div>
 
         <div id="phase-5" class="hidden">
-            <h1>Cuarta <span class="hl-mobile">Pista</span></h1>
-            <p>Tierra de flores, de luz y de... <span class="hl-mobile">arroz</span>. Donde se queman los monumentos en marzo y se vive la vida a todo color.</p>
+            <h1>Cuarta <span class="hl-accent">Pista</span></h1>
+            <p>Tierra de flores, de luz y de... <span class="hl-accent">arroz</span>. Donde se queman los monumentos en marzo y se vive la vida a todo color.</p>
             <div class="options-container">
                 <button class="btn-option" onclick="validate(this, 5, false, 6)">Alicante</button>
                 <button class="btn-option" onclick="validate(this, 5, true, 6)">Valencia</button>
@@ -282,8 +267,8 @@
         </div>
 
         <div id="phase-6" class="hidden">
-            <h1>Última <span class="hl-mobile">Pregunta</span></h1>
-            <p>El quinto pilar del año, el mes de las <span class="hl-mobile">flores</span>. ¿Cuándo es la gran cita?</p>
+            <h1>Última <span class="hl-accent">Pregunta</span></h1>
+            <p>El quinto pilar del año, el mes de las <span class="hl-accent">flores</span>. ¿Cuándo es la gran cita?</p>
             <div class="options-container">
                 <button class="btn-option" onclick="validate(this, 6, false, 7, true)">Marzo</button>
                 <button class="btn-option" onclick="validate(this, 6, false, 7, true)">Abril</button>
@@ -293,7 +278,7 @@
         </div>
 
         <div id="phase-7" class="hidden">
-            <h1>¡SÍIIII! ¡LO HAS <span class="hl-mobile">CONSEGUIDO!</span> 🎉</h1>
+            <h1>¡SÍIIII! ¡LO HAS <span class="hl-accent">CONSEGUIDO!</span> 🎉</h1>
             <p style="margin-bottom: 25px;">Prepara la voz, porque te vas de concierto.</p>
             
             <div class="ticket-wrapper">
@@ -330,13 +315,11 @@
             transition(1, 2); updateProgress(1);
         }
 
-        // Nueva función de validación por botones
         function validate(btn, currentPhaseId, isCorrect, nextPhaseId, isFinal = false) {
             const errorElement = document.getElementById('error-' + currentPhaseId);
 
             if (isCorrect) {
                 errorElement.style.display = 'none';
-
                 if (isFinal) {
                     launchConfetti(); 
                     sfxApplause.volume = 1.0;
@@ -370,7 +353,6 @@
         function transition(current, next) {
             const currentEl = document.getElementById('phase-' + current);
             const nextEl = document.getElementById('phase-' + next);
-
             currentEl.classList.add('fade-out-up');
             setTimeout(() => {
                 currentEl.classList.add('hidden'); 
