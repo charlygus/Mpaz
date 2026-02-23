@@ -33,7 +33,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            min-height: 100dvh; /* Optimización para navegadores móviles modernos */
+            min-height: 100dvh;
             margin: 0;
             padding: 20px;
             overflow-x: hidden;
@@ -137,23 +137,45 @@
         .ticket-label { font-size: 0.75rem; color: #999; text-transform: uppercase; display: block; font-weight: 600; margin-bottom: 5px; }
         .ticket-value { font-size: 1.2rem; color: var(--heading-color); font-weight: 700; }
 
-        /* OPTIMIZACIÓN ESTRICTA PARA SMARTPHONE (iPhone & Realme) */
+        /* OPTIMIZACIÓN MÓVIL - OPCIÓN 3: CONTRASTE DINÁMICO */
         @media (max-width: 600px) {
             .main-container {
-                padding: 35px 25px; /* Aprovecha más el ancho de la pantalla */
+                padding: 40px 25px;
+                text-align: left; /* Rompemos la simetría central */
             }
             h1 {
-                font-size: 1.7rem; /* Texto más contenido para que no ocupe toda la pantalla */
+                font-size: 2.1rem;
+                line-height: 1.1;
                 margin-bottom: 20px;
+                letter-spacing: -0.5px;
+            }
+            /* La palabra clave del título salta de línea y se hace gigante */
+            h1 .hl-mobile {
+                display: block;
+                color: var(--primary-color);
+                font-size: 2.5rem;
+                font-weight: 800;
+                margin-top: 5px;
+                text-transform: uppercase;
             }
             p {
-                font-size: 1.05em;
-                margin-bottom: 25px;
+                font-size: 1.15em;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+            /* Resaltamos la palabra clave del párrafo */
+            p .hl-mobile {
+                color: var(--accent-gold);
+                font-weight: 700;
+                background: rgba(212, 175, 55, 0.1);
+                padding: 2px 6px;
+                border-radius: 4px;
             }
             input[type="text"] {
                 width: 100%;
                 padding: 16px;
-                font-size: 16px !important; /* Vital para evitar el auto-zoom en iPhone */
+                font-size: 16px !important;
+                text-align: left; /* Campo de texto alineado a la izquierda */
             }
             .btn-action {
                 width: 100%;
@@ -162,14 +184,23 @@
             #success-overlay h2 {
                 font-size: 2.2rem;
             }
+            /* La pantalla final del ticket la volvemos a centrar para que luzca perfecta */
+            #phase-7 {
+                text-align: center;
+            }
+            #phase-7 h1 .hl-mobile {
+                display: inline; /* En la fase final no rompemos la frase */
+                font-size: inherit;
+            }
             .ticket-wrapper {
                 padding: 20px;
+                text-align: left;
             }
             .ticket-title {
                 font-size: 1.5rem;
             }
             .ticket-details {
-                flex-direction: column; /* Coloca los datos de la entrada en vertical */
+                flex-direction: column;
                 gap: 12px;
             }
         }
@@ -191,53 +222,53 @@
         <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
         
         <div id="phase-1">
-            <h1>¡HOLA! ¡TENGO UNA SORPRESA INCREÍBLE PARA TI! 🎁</h1>
-            <p>Pero para conseguirla, vamos a ver si conoces las claves. ¿Jugamos?</p>
+            <h1>¡HOLA! ¡TENGO UNA <span class="hl-mobile">SORPRESA</span> INCREÍBLE PARA TI! 🎁</h1>
+            <p>Pero para conseguirla, vamos a ver si conoces las <span class="hl-mobile">claves</span>. ¿Jugamos?</p>
             <button class="btn-action" onclick="startGame()">Empezar el Juego</button>
         </div>
 
         <div id="phase-2" class="hidden">
-            <h1>Primera Pista</h1>
-            <p>En el garito no le dejaban entrar porque las llevaba puestas. ¿Qué llevaba en los pies?</p>
+            <h1>Primera <span class="hl-mobile">Pista</span></h1>
+            <p>En el garito no le dejaban entrar porque las llevaba puestas. ¿Qué llevaba en los <span class="hl-mobile">pies</span>?</p>
             <input type="text" id="input-2" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 2, 'zapatillas', 3)">
             <p id="error-2" class="error-message">Error. Pista: Es algo muy cómodo...</p>
             <button class="btn-action" onclick="validate(2, 'zapatillas', 3)">Comprobar</button>
         </div>
 
         <div id="phase-3" class="hidden">
-            <h1>Segunda Pista</h1>
-            <p>Tiene una canción sobre un niño que se niega a crecer y prefiere volar. ¿De qué personaje hablamos?</p>
+            <h1>Segunda <span class="hl-mobile">Pista</span></h1>
+            <p>Tiene una canción sobre un niño que se niega a crecer y prefiere <span class="hl-mobile">volar</span>. ¿De qué personaje hablamos?</p>
             <input type="text" id="input-3" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 3, 'peter pan', 4)">
             <p id="error-3" class="error-message">Error. Pista: Vive en Nunca Jamás...</p>
             <button class="btn-action" onclick="validate(3, 'peter pan', 4)">Comprobar</button>
         </div>
 
         <div id="phase-4" class="hidden">
-            <h1>Tercera Pista</h1>
-            <p>Antes de volar solo, lideraba una banda que no estaba muy cuerda. ¿Cómo se llamaban?</p>
+            <h1>Tercera <span class="hl-mobile">Pista</span></h1>
+            <p>Antes de volar solo, lideraba una banda que no estaba muy <span class="hl-mobile">cuerda</span>. ¿Cómo se llamaban?</p>
             <input type="text" id="input-4" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 4, 'canto del loco', 5)">
             <p id="error-4" class="error-message">Error. Pista: ECDL</p>
             <button class="btn-action" onclick="validate(4, 'canto del loco', 5)">Comprobar</button>
         </div>
 
         <div id="phase-5" class="hidden">
-            <h1>Cuarta Pista</h1>
-            <p>Tierra de flores, de luz y de... arroz. Donde se queman los monumentos en marzo y se vive la vida a todo color.</p>
+            <h1>Cuarta <span class="hl-mobile">Pista</span></h1>
+            <p>Tierra de flores, de luz y de... <span class="hl-mobile">arroz</span>. Donde se queman los monumentos en marzo y se vive la vida a todo color.</p>
             <input type="text" id="input-5" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 5, 'valencia', 6)">
             <p id="error-5" class="error-message">Revisa el mapa...</p>
             <button class="btn-action" onclick="validate(5, 'valencia', 6)">Comprobar</button>
         </div>
 
         <div id="phase-6" class="hidden">
-            <h1>Última Pregunta</h1>
-            <p>El quinto pilar del año, el mes de las flores. ¿Cuándo es la gran cita?</p>
+            <h1>Última <span class="hl-mobile">Pregunta</span></h1>
+            <p>El quinto pilar del año, el mes de las <span class="hl-mobile">flores</span>. ¿Cuándo es la gran cita?</p>
             <input type="text" id="input-6" placeholder="Respuesta..." autocomplete="off" onkeypress="checkEnter(event, 6, 'mayo', 7, true)">
             <p id="error-6" class="error-message">Fecha incorrecta...</p>
             <button class="btn-action" onclick="validate(6, 'mayo', 7, true)">Ver mi Regalo</button>
         </div>
 
         <div id="phase-7" class="hidden">
-            <h1>¡SÍIIII! ¡LO HAS CONSEGUIDO! 🎉</h1>
+            <h1>¡SÍIIII! ¡LO HAS <span class="hl-mobile">CONSEGUIDO!</span> 🎉</h1>
             <p style="margin-bottom: 25px;">Prepara la voz, porque te vas de concierto.</p>
             
             <div class="ticket-wrapper">
